@@ -31,7 +31,9 @@
                         
                         <span class="hidden-xs">
 
-                            Admin
+                            <?php
+                                echo $_SESSION["nombre"];
+                            ?>
 
                         </span>
                     </a>

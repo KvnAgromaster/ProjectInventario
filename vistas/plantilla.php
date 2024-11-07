@@ -75,22 +75,41 @@ session_start();
 
   <?php
 
-    echo '<div class="wrapper">';
+    if (isset($_SESSION["iniciarSesion"]) && $_SESSION["iniciarSesion"] == "ok") { 
 
-    // cabezote
-    include "modulos/cabezote.php";
+      echo '<div class="wrapper">';
 
-    // menu
-    include "modulos/menu.php";
+      // cabezote
+      include "modulos/cabezote.php";
+
+      // menu
+      include "modulos/menu.php";
 
 
-    include "modulos/inicio.php";
-    
+      // contenido
 
-    //footer
-    include "modulos/footer.php";
+      if(isset($_GET["ruta"])) {
+        if($_GET["ruta"] == "inicio" ||
+          $_GET["ruta"] == "almacenes" ||
+          $_GET["ruta"] == "productos" ||
+          $_GET["ruta"] == "inventario" ||
+          $_GET["ruta"] == "salir") {
+          include "modulos/".$_GET["ruta"].".php";
+        } else {
+          include "modulos/error404.php";
+        }
+      }
+      
 
-    echo '</div>';
+      //footer
+      include "modulos/footer.php";
+
+      echo '</div>';
+
+    } else {
+      include "modulos/login.php";
+
+    }
 
   ?>
 <!-- ./wrapper -->

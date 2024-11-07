@@ -14,13 +14,13 @@
                 </a>
             </li>
             <li class="menu-item">
-                <a href="clientes">
+                <a href="almacenes">
                     <i class="fa fa-archive"></i>
                     <span>Almacenes</span>
                 </a>
             </li>
             <li class="menu-item">
-                <a href="clientes">
+                <a href="inventario">
                     <i class="fa fa-bar-chart"></i>
                     <span>Inventario</span>
                 </a>
