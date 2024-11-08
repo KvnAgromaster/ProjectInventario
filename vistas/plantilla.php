@@ -115,9 +115,9 @@ session_start();
 <!-- ./wrapper -->
 
   <script src="vistas/Js/plantilla.js"></script>
+  <script src="vistas/Js/productos.js"></script>
   <!-- <script src="vistas/Js/usuarios.js"></script>
   <script src="vistas/Js/categorias.js"></script>
-  <script src="vistas/Js/productos.js"></script>
   <script src="vistas/Js/clientes.js"></script> -->
 
 </body>

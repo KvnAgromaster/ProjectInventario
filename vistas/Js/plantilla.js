@@ -1,2 +1,6 @@
 // Sidebar menu
-$('.sidebar-menu').tree()
+$('.sidebar-menu').tree();
+
+
+// Data Table
+$(".tablas").DataTable();
