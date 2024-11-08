@@ -35,47 +35,54 @@
                 
                   $item = null;
                   $valor = null;
+                  $index = 0;
 
                   $productos = ModeloProductos::mdlMostrarProductos("productos", $item, $valor);
 
                   foreach ($productos as $key => $value) {
 
-                    echo '<tr>
-                    <td>'.($key+1).'</td>
-                    <td>'.$value["producto"].'</td>';
+                    if ($value["status"] == 1) {
 
-                    if ($value["stock"] <= 10) {
+                      $index += 1; // Incremento
 
-                      echo '<td><button class="btn btn-danger">'.$value["stock"].'</button></td>';
+                      echo '<tr>
+                      <td>'.$index.'</td>
+                      <td>'.$value["producto"].'</td>';
 
-                    } else if ($value["stock"] > 11 && $value["stock"] <= 15) {
+                      if ($value["stock"] <= 10) {
 
-                      echo '<td><button class="btn btn-warning">'.$value["stock"].'</button></td>';
+                        echo '<td><button class="btn btn-danger">'.$value["stock"].'</button></td>';
 
-                    } else {
+                      } else if ($value["stock"] > 11 && $value["stock"] <= 15) {
 
-                      echo '<td><button class="btn btn-success">'.$value["stock"].'</button></td>';
+                        echo '<td><button class="btn btn-warning">'.$value["stock"].'</button></td>';
+
+                      } else {
+
+                        echo '<td><button class="btn btn-success">'.$value["stock"].'</button></td>';
+
+                      }
+
+                      echo '<td>'.$value["fecha"].'</td>';
+
+                      if ($value["ultima_modificacion"]) {
+
+                        echo '<td>'.$value["ultima_modificacion"].'</td>';
+
+                      } else {
+
+                        echo '<td> - </td>';
+
+                      }
+                      
+                      echo '<td>
+                              <div class="btn-group">
+                                <button class="btn btn-warning"><i class="fa fa-pencil"></i></button>
+                                <button class="btn btn-danger btnEliminarProducto" idProducto="'.$value["id"].'" ><i class="fa fa-times"></i></button>
+                              </div>
+                            </td>';
 
                     }
-
-                    echo '<td>'.$value["fecha"].'</td>';
-
-                    if ($value["ultima_modificacion"]) {
-
-                      echo '<td>'.$value["ultima_modificacion"].'</td>';
-
-                    } else {
-
-                      echo '<td> - </td>';
-
-                    }
-                    
-                    echo '<td>
-                            <div class="btn-group">
-                              <button class="btn btn-warning"><i class="fa fa-pencil"></i></button>
-                              <button class="btn btn-danger"><i class="fa fa-times"></i></button>
-                            </div>
-                          </td>';
 
                   }
                 
@@ -125,7 +132,7 @@
 
         <div class="modal-footer">
           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
-          <button type="submit" class="btn btn-primary">Guardar</button>
+          <button type="button" id="btnModalAgregarProducto" class="btn btn-primary">Guardar</button>
         </div>
 
       </form>
