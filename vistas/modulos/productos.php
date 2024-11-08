@@ -30,32 +30,56 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Papa</td>
-                  <td>10</td>
-                  <td>2024-10-31 08:30:32</td>
-                  <td>2024-10-31 08:30:32</td>        
-                  <td>
-                      <div class="btn-group">
-                        <button class="btn btn-warning"><i class="fa fa-pencil"></i></button>
-                        <button class="btn btn-danger"><i class="fa fa-times"></i></button>
-                      </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Zanahoria</td>
-                  <td>10</td>
-                  <td>2024-10-31 08:30:32</td>
-                  <td>2024-10-31 08:30:32</td>        
-                  <td>
-                      <div class="btn-group">
-                        <button class="btn btn-warning"><i class="fa fa-pencil"></i></button>
-                        <button class="btn btn-danger"><i class="fa fa-times"></i></button>
-                      </div>
-                  </td>
-                </tr>
+
+                <?php 
+                
+                  $item = null;
+                  $valor = null;
+
+                  $productos = ModeloProductos::mdlMostrarProductos("productos", $item, $valor);
+
+                  foreach ($productos as $key => $value) {
+
+                    echo '<tr>
+                    <td>'.($key+1).'</td>
+                    <td>'.$value["producto"].'</td>';
+
+                    if ($value["stock"] <= 10) {
+
+                      echo '<td><button class="btn btn-danger">'.$value["stock"].'</button></td>';
+
+                    } else if ($value["stock"] > 11 && $value["stock"] <= 15) {
+
+                      echo '<td><button class="btn btn-warning">'.$value["stock"].'</button></td>';
+
+                    } else {
+
+                      echo '<td><button class="btn btn-success">'.$value["stock"].'</button></td>';
+
+                    }
+
+                    echo '<td>'.$value["fecha"].'</td>';
+
+                    if ($value["ultima_modificacion"]) {
+
+                      echo '<td>'.$value["ultima_modificacion"].'</td>';
+
+                    } else {
+
+                      echo '<td> - </td>';
+
+                    }
+                    
+                    echo '<td>
+                            <div class="btn-group">
+                              <button class="btn btn-warning"><i class="fa fa-pencil"></i></button>
+                              <button class="btn btn-danger"><i class="fa fa-times"></i></button>
+                            </div>
+                          </td>';
+
+                  }
+                
+                ?>
 
               </tbody>
             </table>
