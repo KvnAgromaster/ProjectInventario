@@ -2,19 +2,21 @@ $(document).on("click", "#btnModalAgregarProducto", function(e){
 
     var producto = $("#nuevoProducto").val();
 
-    var datos = new FormData();
-    datos.append("producto", producto);
+    var datos = {
+        valor: producto,
+        status: 1,
+        item: "producto",
+        stock: 0,
+        tabla: "productos",
+
+    }
 
     $.ajax({
-        url: "ajax/productos.ajax.php",
         method: "POST",
-        data: datos,
-        cache: false,
-        contentType: false,
-        processData: false,
-        dataType: "text",
-        success: function(respuesta){
-
+        url: "ajax/productos.ajax.php",
+        data: {"datos": JSON.stringify(datos), "AgregarProducto": 1},
+        dataType: "json",
+        success: function (respuesta) {
             console.log(respuesta);
 
             if (respuesta == "ya-hay-registro") {
@@ -43,19 +45,20 @@ $(document).on("click", "#btnModalAgregarProducto", function(e){
                 }).then((result)=> {
             
                     if (result.value) {
-                        var datosActivar = new FormData();
-                        datosActivar.append("nombreProducto", producto);
+
+                        var datos = {
+                            tabla: "productos",
+                            item: "producto",
+                            valor: producto
+                        }
 
                         $.ajax({
-                            url: "ajax/productos.ajax.php",
                             method: "POST",
-                            data: datosActivar,
-                            cache: false,
-                            contentType: false,
-                            processData: false,
-                            dataType: "text",
+                            url: "ajax/productos.ajax.php",
+                            data: {"datosActivar": JSON.stringify(datos), "ActivarProducto": 1},
+                            dataType: "json",
                             success: function(respuesta){
-
+            
                                 console.log(respuesta);
                                 
                                 Swal.fire({
@@ -71,7 +74,10 @@ $(document).on("click", "#btnModalAgregarProducto", function(e){
                                     }
                     
                                 });
-
+                                
+                            },
+                            error: function (respuesta) {
+                                console.log("Error: " + respuesta);
                             }
                         })
                     }
@@ -97,9 +103,12 @@ $(document).on("click", "#btnModalAgregarProducto", function(e){
                 });
 
             }
-            
+        },
+
+        error: function (respuesta) {
+            console.log("Error: " + respuesta);
         }
-    })
+    });
 
 })
 
@@ -121,20 +130,24 @@ $(document).on("click", ".btnEliminarProducto", function(){
 
         if (result.value) {
 
-            var datos = new FormData();
-            datos.append("idProducto", id);
+            var datos = {
+                tabla: "productos",
+                item: "id",
+                valor: id
+            }
+
+            // var datos = new FormData();
+            // datos.append("idProducto", id);
 
             $.ajax({
-                url: "ajax/productos.ajax.php",
                 method: "POST",
-                data: datos,
-                cache: false,
-                contentType: false,
-                processData: false,
+                url: "ajax/productos.ajax.php",
+                data: {"datosEliminar": JSON.stringify(datos), "EliminarProducto": 1},
                 dataType: "json",
                 success: function(respuesta){
 
                     console.log(respuesta);
+                    
                     Swal.fire({
                         icon: "success",
                         title: "El producto ha sido borrado correctamente!",
@@ -148,7 +161,11 @@ $(document).on("click", ".btnEliminarProducto", function(){
                         }
 
                     });
+                    
                 },
+                error: function (respuesta) {
+                    console.log("Error: " + respuesta);
+                }
             })
 
         }

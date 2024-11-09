@@ -32,12 +32,22 @@
               <tbody>
 
                 <?php 
-                
+
                   $item = null;
                   $valor = null;
+
+                  // Creacion de JSON 
+
+                  $json = array("tabla" => "productos",
+                                  "item" => $item,
+                                  "valor" => $valor);
+
+                  $datos = json_encode($json);
+                                  
+
                   $index = 0;
 
-                  $productos = ModeloProductos::mdlMostrarProductos("productos", $item, $valor);
+                  $productos = ModeloProductos::mdlMostrarProductos($datos);
 
                   foreach ($productos as $key => $value) {
 
@@ -136,12 +146,6 @@
         </div>
 
       </form>
-
-      <?php
-        // $crearProducto =  new ControladorProductos();
-        // $crearProducto -> ctrCrearProducto();
-
-      ?>
 
     </div>
 

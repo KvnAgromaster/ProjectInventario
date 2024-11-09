@@ -3,11 +3,17 @@
 require_once "conexion.php";
 
 class ModeloProductos {
-	
-	// Mostrar Productos
-    static public function mdlMostrarProductos($tabla, $item, $valor) {
 
-        if ($item != null) {
+	// Mostrar Productos
+    static public function mdlMostrarProductos($datos) {
+
+		$aux = json_decode($datos, true);
+
+		$tabla = $aux["tabla"];
+		$item = $aux["item"];
+		$valor = $aux["valor"];
+
+		if ($item != null) {
             $stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item ORDER BY id DESC");
             $stmt -> bindParam(":".$item, $valor, PDO::PARAM_STR);
             $stmt -> execute();
@@ -24,17 +30,23 @@ class ModeloProductos {
 
         $stmt -> close();
         $stmt = null;
+
+        
     }
 
     // Ingresar Productos
 
-    static public function mdlIngresarProducto($tabla, $datos){
+    static public function mdlIngresarProducto($datos){
 
-		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(producto, stock, status) VALUES (:producto, :stock, :status)");
+		$aux = json_decode($datos, true);
 
-        $stmt->bindParam(":producto", $datos["producto"], PDO::PARAM_STR);
-		$stmt->bindParam(":stock", $datos["stock"], PDO::PARAM_INT);
-        $stmt->bindParam(":status", $datos["status"], PDO::PARAM_INT);
+		$tabla = $aux["tabla"];
+		$item = $aux["item"];
+
+		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla($item, status) VALUES (:producto, :status)");
+
+        $stmt->bindParam(":producto", $aux["valor"], PDO::PARAM_STR);
+        $stmt->bindParam(":status", $aux["status"], PDO::PARAM_INT);
 
 		if($stmt->execute()){
 
@@ -51,24 +63,50 @@ class ModeloProductos {
 
 	}
 
-	// ELIMINAR PRODUCTO
+	// ACTUALIZAR PRODUCTO
 
-	static public function mdlEliminarProducto($tabla, $datos) {
-		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET status = 0 WHERE id = :id");
-        $stmt -> bindParam(":id", $datos, PDO::PARAM_INT);
+	static public function mdlActualizarProducto($datos) {
 
-        if($stmt->execute()){
+		$aux = json_decode($datos, true);
 
-			return "ok";
+		$tabla = $aux["tabla"];
+		$item = $aux["item"];
 
-		}else{
+		if ($item == "id") {
 
-			return "error";
-		
+			$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET status = 0 WHERE $item = :id");
+			$stmt -> bindParam(":id", $aux["valor"], PDO::PARAM_INT);
+
+			if($stmt->execute()){
+
+				return "ok";
+
+			}else{
+
+				return "error";
+			
+			}
+
+
+		} else if ($item == "producto") {
+
+			$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET status = 1 WHERE $item = :producto");
+			$stmt -> bindParam(":producto", $aux["valor"], PDO::PARAM_STR);
+
+			if($stmt->execute()){
+
+				return "ok";
+
+			}else{
+
+				return "error";
+			
+			}
+
 		}
 
-		$stmt->close();
-		$stmt = null;
+		// $stmt->close();
+		// $stmt = null;
 
     }
 
