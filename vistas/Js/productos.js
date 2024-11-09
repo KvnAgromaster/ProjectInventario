@@ -14,20 +14,89 @@ $(document).on("click", "#btnModalAgregarProducto", function(e){
         processData: false,
         dataType: "text",
         success: function(respuesta){
+
+            console.log(respuesta);
+
+            if (respuesta == "ya-hay-registro") {
+
+                Swal.fire({
+                    icon: "error",
+                    title: "El producto ya existe",
+                    showConfirmButton: true,
+                    confirmButtonText: "Cerrar",
+                    closeOnConfirm: false
+
+                });
+
+            } else if (respuesta == "Validacion") {
+
+                Swal.fire({
+                    title: "El producto ya existe, pero esta deshabilitado",
+                    text: "Desea habilitarlo?",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    cancelButtonText: 'No',
+                    confirmButtonText: 'Si'
             
-            Swal.fire({
-                icon: "success",
-                title: "El producto se agrego correctamente!",
-                showConfirmButton: true,
-                confirmButtonText: "Cerrar",
-                closeOnConfirm: false
+                }).then((result)=> {
+            
+                    if (result.value) {
+                        var datosActivar = new FormData();
+                        datosActivar.append("nombreProducto", producto);
 
-            }).then((result) => {
-                if (result.value) {
-                    window.location = "productos";
-                }
+                        $.ajax({
+                            url: "ajax/productos.ajax.php",
+                            method: "POST",
+                            data: datos,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: "text",
+                            success: function(respuesta){
 
-            });
+                                console.log(respuesta);
+                                
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "El producto se agrego correctamente!",
+                                    showConfirmButton: true,
+                                    confirmButtonText: "Cerrar",
+                                    closeOnConfirm: false
+                    
+                                }).then((result) => {
+                                    if (result.value) {
+                                        window.location = "productos";
+                                    }
+                    
+                                });
+
+                            }
+                        })
+                    }
+
+                    
+            
+                });
+
+            } else {
+
+                Swal.fire({
+                    icon: "success",
+                    title: "El producto se agrego correctamente!",
+                    showConfirmButton: true,
+                    confirmButtonText: "Cerrar",
+                    closeOnConfirm: false
+    
+                }).then((result) => {
+                    if (result.value) {
+                        window.location = "productos";
+                    }
+    
+                });
+
+            }
             
         }
     })

@@ -14,14 +14,33 @@ class AjaxProductos {
 
         $stock = 0;
 
+        $item = "producto";
+
         $valor = $this -> producto;
 
-        $datos = array("producto" => $valor,
+        $respuesta = ModeloProductos::mdlMostrarProductos($tabla, $item, $valor);
+
+        if (!$respuesta) {
+
+            $datos = array("producto" => $valor,
                         "stock" => $stock,
                         "status" => $status);
 
-        $respuesta = ModeloProductos::mdlIngresarProducto($tabla, $datos);
-        echo json_encode($respuesta);
+            $respuesta = ModeloProductos::mdlIngresarProducto($tabla, $datos);
+            echo json_encode($respuesta);
+
+        } else if ($respuesta && $respuesta["status"] == 0) {
+
+            echo "Validacion";
+
+
+        } else {
+
+            echo "ya-hay-registro";
+
+        }
+
+        
 
     }
 
@@ -34,6 +53,18 @@ class AjaxProductos {
         $respuesta = ModeloProductos::mdlEliminarProducto("productos", $datos);
 
         echo json_encode($respuesta);
+
+    }
+
+    public $nombreProducto;
+
+    public function ajaxActualizarProducto() {
+
+        $datos = $this -> nombreProducto;
+
+        $respuesta = ModeloProductos::mdlActualizarProducto("productos", $datos);
+
+        echo json_encode("Hola123");
 
     }
 
@@ -52,5 +83,13 @@ if (isset($_POST["idProducto"])) {
     $ID = new AjaxProductos();
     $ID -> idProducto = $_POST["idProducto"];
     $ID -> ajaxEliminarProducto();
+
+}
+
+if (isset($_POST["nombreProducto"])) {
+
+    $Producto = new AjaxProductos();
+    $Producto -> producto = $_POST["nombreProducto"];
+    $Producto -> ajaxActualizarProducto();
 
 }

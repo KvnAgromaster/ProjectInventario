@@ -72,8 +72,48 @@ class ModeloProductos {
 
     }
 
+	// ACTUALIZAR PRODUCTO
+
+	static public function mdlActualizarProducto($tabla, $datos) {
+		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET status = 1 WHERE producto = :producto");
+        $stmt -> bindParam(":producto", $datos, PDO::PARAM_INT);
+
+        if($stmt->execute()){
+
+			return "ok";
+
+		}else{
+
+			return "error";
+		
+		}
+
+		$stmt->close();
+		$stmt = null;
+
+    }
+
+
 	
+	// VALIDAR QUE NO HAYA REPETICIONES
+
+	static public function mdlNoRepetirProducto($tabla, $datos) {
+		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE producto = :producto");
+		$stmt->bindParam(":producto", $datos, PDO::PARAM_STR);
 	
+		if ($stmt->execute()) {
+			if ($stmt->rowCount() > 0) {
+				return "existe";
+			} else {
+				return "no_existe";
+			}
+		} else {
+			return "error";
+		}
+	
+		$stmt->close();
+		$stmt = null;
+	}
 
 
 }
