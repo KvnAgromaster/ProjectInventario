@@ -56,15 +56,15 @@ class AjaxProductos {
 
     }
 
-    public $nombreProducto;
+    // public $nombreProducto;
 
-    public function ajaxActualizarProducto() {
+    public function ajaxActivarProducto() {
 
-        $datos = $this -> nombreProducto;
+        $datos = $this -> producto;
 
-        $respuesta = ModeloProductos::mdlActualizarProducto("productos", $datos);
+        $respuesta = ModeloProductos::mdlActivarProducto("productos", $datos);
 
-        echo json_encode("Hola123");
+        echo json_encode($respuesta);
 
     }
 
@@ -90,6 +90,6 @@ if (isset($_POST["nombreProducto"])) {
 
     $Producto = new AjaxProductos();
     $Producto -> producto = $_POST["nombreProducto"];
-    $Producto -> ajaxActualizarProducto();
+    $Producto -> ajaxActivarProducto();
 
 }

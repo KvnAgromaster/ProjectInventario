@@ -72,9 +72,9 @@ class ModeloProductos {
 
     }
 
-	// ACTUALIZAR PRODUCTO
+	// ACTIVAR PRODUCTO
 
-	static public function mdlActualizarProducto($tabla, $datos) {
+	static public function mdlActivarProducto($tabla, $datos) {
 		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET status = 1 WHERE producto = :producto");
         $stmt -> bindParam(":producto", $datos, PDO::PARAM_INT);
 
@@ -92,29 +92,6 @@ class ModeloProductos {
 		$stmt = null;
 
     }
-
-
-	
-	// VALIDAR QUE NO HAYA REPETICIONES
-
-	static public function mdlNoRepetirProducto($tabla, $datos) {
-		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE producto = :producto");
-		$stmt->bindParam(":producto", $datos, PDO::PARAM_STR);
-	
-		if ($stmt->execute()) {
-			if ($stmt->rowCount() > 0) {
-				return "existe";
-			} else {
-				return "no_existe";
-			}
-		} else {
-			return "error";
-		}
-	
-		$stmt->close();
-		$stmt = null;
-	}
-
 
 }
 

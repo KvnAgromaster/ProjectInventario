@@ -49,7 +49,7 @@ $(document).on("click", "#btnModalAgregarProducto", function(e){
                         $.ajax({
                             url: "ajax/productos.ajax.php",
                             method: "POST",
-                            data: datos,
+                            data: datosActivar,
                             cache: false,
                             contentType: false,
                             processData: false,
