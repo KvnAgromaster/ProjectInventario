@@ -23,7 +23,6 @@
                 <tr>
                   <th>#</th>
                   <th>Producto</th>
-                  <th>Stock</th>
                   <th>Agregado</th>
                   <th>Ultima Modificacion</th>
                   <th>Acciones</th>
@@ -58,20 +57,6 @@
                       echo '<tr>
                       <td>'.$index.'</td>
                       <td>'.$value["producto"].'</td>';
-
-                      if ($value["stock"] <= 10) {
-
-                        echo '<td><button class="btn btn-danger">'.$value["stock"].'</button></td>';
-
-                      } else if ($value["stock"] > 11 && $value["stock"] <= 15) {
-
-                        echo '<td><button class="btn btn-warning">'.$value["stock"].'</button></td>';
-
-                      } else {
-
-                        echo '<td><button class="btn btn-success">'.$value["stock"].'</button></td>';
-
-                      }
 
                       echo '<td>'.$value["fecha"].'</td>';
 

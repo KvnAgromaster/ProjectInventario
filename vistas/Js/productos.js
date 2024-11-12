@@ -22,6 +22,8 @@ function ValidarEnTiempoReal(inputValue, btn, input) {
 
     if (!validarProducto(inputValue)) {
 
+        $(".alert").remove();
+
         $(input).parent().after('<div class="alert alert-warning">El producto no puede contener caracteres especiales o ir vacio</div>');
 
         $(btn).prop("disabled", true);
@@ -50,6 +52,10 @@ function ValidarEnTiempoReal(inputValue, btn, input) {
 
                     $(btn).prop("disabled", true);
 
+                } else if (respuesta == "existe-desactivado") {
+
+                    $(input).parent().after('<div class="alert alert-warning">El producto esta desactivado</div>');
+
                 }
                 
             },
@@ -69,9 +75,6 @@ function validarProducto(producto) {
         return false;
     }
 
-    // Elimina espacios en blanco al inicio y al final
-    producto = producto.trim();
-
     // Verifica caracteres permitidos
     const regex = /^[a-zA-Z0-9\s]+$/;
     if (!regex.test(producto)) {
@@ -80,6 +83,17 @@ function validarProducto(producto) {
 
     // Si todo esta bien
    return true;
+}
+
+// Obtener fecha y formatearla
+
+function formatoFecha(fecha, formato) {
+    const map = {
+        dd: fecha.getDate(),
+        mm: fecha.getMonth() + 1,
+        yyyy: fecha.getFullYear()
+    }
+    return formato.replace(/yyyy|mm|dd/gi, matched => map[matched])
 }
 
 $(document).on("click", "#btnModalAgregarProducto", function(e){
@@ -257,12 +271,21 @@ $(document).on("click", ".btnEliminarProducto", function(){
 // Editar Producto
 
 $(document).on("click", "#btnModalEditarProducto", function(e){
+
+    const fecha = new Date();
+
+    // Obtener Hora actual
+    const hora = fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds()+ "." + fecha.getMilliseconds();
+
+    // Obtener fecha y hora
+    const fechaHora = formatoFecha(fecha, 'yyyy/mm/dd') + " " + hora;
     
     let datos = {
         tabla: "productos",
         item: "producto",
         valor: $("#editarProducto").val(),
-        id: $("#idProductoActual").val()
+        id: $("#idProductoActual").val(),
+        fecha: fechaHora, 
 
     }
 

@@ -87,15 +87,18 @@ class AjaxProductos {
         $respuesta = ModeloProductos::mdlMostrarProductos($datos);
         
         
-        if ($respuesta) {
+        if ($respuesta && $respuesta["status"] == 0) {
 
+            echo json_encode("existe-desactivado");
+
+        } else if ($respuesta) {
+            
             echo json_encode("Si existe");
             
-
         } else {
 
             echo json_encode("no existe");
-            
+
         }
 
     }

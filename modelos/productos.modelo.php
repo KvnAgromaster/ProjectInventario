@@ -118,8 +118,9 @@ class ModeloProductos {
 
 		$tabla = $aux["tabla"];
 
-		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET producto = :producto WHERE id = :id");
+		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET producto = :producto, ultima_modificacion = :ultima_modificacion WHERE id = :id");
 			$stmt -> bindParam(":producto", $aux["valor"], PDO::PARAM_STR);
+			$stmt -> bindParam(":ultima_modificacion", $aux["fecha"], PDO::PARAM_STR);
 			$stmt -> bindParam(":id", $aux["id"], PDO::PARAM_INT);
 
 			if($stmt->execute()){
@@ -131,7 +132,7 @@ class ModeloProductos {
 				return "error";
 			
 			}
-			
+
 		$stmt->close();
 		$stmt = null;
 
