@@ -3,7 +3,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Inicio
+        Almacenes
         <small>Panel de Control</small>
       </h1>
       <ol class="breadcrumb">
@@ -16,27 +16,84 @@
     <!-- Main content -->
     <section class="content">
 
+        <div class="box-header with-border">
+          <button class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarAlmacen">Agregar</button>
+        </div>
+
       <!-- Default box -->
       <div class="box">
-        <div class="box-header with-border">
-          <h3 class="box-title">Title</h3>
-
-          <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
-                    title="Collapse">
-              <i class="fa fa-minus"></i></button>
-            <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
-              <i class="fa fa-times"></i></button>
-          </div>
-        </div>
         <div class="box-body">
-          Start creating your amazing application!
+          <table class="table table-bordered table-striped tablas" style="padding: 5px;">
+
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>Direccion</th>
+                <th>Agregado</th>
+                <th>Ultima Modificacion</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <?php
+
+                  $item = null;
+                  $valor = null;
+
+                  // Creacion de JSON 
+
+                  $json = array("tabla" => "almacenes",
+                                  "item" => $item,
+                                  "valor" => $valor);
+
+                  $datos = json_encode($json);
+                                  
+
+                  $index = 0;
+
+                  $almacenes = ModeloAlmacenes::mdlMostrarAlmacenes($datos);
+
+                  foreach ($almacenes as $key => $value) {
+
+                    $index += 1; // Incremento
+
+                      echo '<tr>
+                      <td>'.$index.'</td>
+                      <td>'.$value["almacen"].'</td>
+                      <td>'.$value["direccion"].'</td>
+                      <td>'.$value["fecha"].'</td>';
+
+                      if ($value["ultima_modificacion"]) {
+
+                        echo '<td>'.$value["ultima_modificacion"].'</td>';
+
+                      } else {
+
+                        echo '<td> - </td>';
+
+                      }
+
+                      echo '<td>
+                              <div class="btn-group">
+                                <button class="btn btn-warning btnEditarAlmacen" idAlmacen="'.$value["id"].'" data-toggle="modal" data-target="#modalEditarAlmacen"><i class="fa fa-pencil"></i></button>
+
+                                <button class="btn btn-danger btnEliminarAlmacen" idAlmacen="'.$value["id"].'" ><i class="fa fa-times"></i></button>
+                              </div>
+                            </td>';
+
+                  }
+
+                ?>
+
+              </tr>
+            </tbody>
+
+          </table>
+
         </div>
-        <!-- /.box-body -->
-        <div class="box-footer">
-          Footer
-        </div>
-        <!-- /.box-footer-->
+        
       </div>
       <!-- /.box -->
 
