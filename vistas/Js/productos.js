@@ -1,3 +1,87 @@
+let timeoutId;
+
+$("#nuevoProducto").on("keyup", function() {
+    clearTimeout(timeoutId);    // Evita acumulaciones
+
+    timeoutId = setTimeout(function() {
+        let currentInputValue = $("#nuevoProducto").val();
+        ValidarEnTiempoReal(currentInputValue, "#btnModalAgregarProducto", "#nuevoProducto");
+    }, 800);
+});
+
+$("#editarProducto").on("keyup", function() {
+    clearTimeout(timeoutId);    // Evita acumulaciones
+
+    timeoutId = setTimeout(function() {
+        let currentInputValue = $("#editarProducto").val();
+        ValidarEnTiempoReal(currentInputValue, "#btnModalEditarProducto", "#editarProducto");
+    }, 800);
+});
+
+function ValidarEnTiempoReal(inputValue, btn, input) {
+
+    if (!validarProducto(inputValue)) {
+
+        $(input).parent().after('<div class="alert alert-warning">El producto no puede contener caracteres especiales o ir vacio</div>');
+
+        $(btn).prop("disabled", true);
+
+    } else {
+
+        $(".alert").remove();
+        $(btn).prop("disabled", false);
+
+        var dato = {
+            tabla: "productos",
+            item: "producto",
+            valor: inputValue
+        };
+
+        $.ajax({
+            method: "POST",
+            url: "ajax/productos.ajax.php",
+            data: {"datosValidar": JSON.stringify(dato), "ValidarProducto": 1},
+            dataType: "json",
+            success: function (respuesta) {
+                console.log(respuesta);
+                if (respuesta == "Si existe") {
+                    
+                    $(input).parent().after('<div class="alert alert-warning">El producto ya existe</div>');
+
+                    $(btn).prop("disabled", true);
+
+                }
+                
+            },
+
+            error: function (respuesta) {
+                console.log("Error: " + respuesta);
+            }
+        });
+
+    }
+
+}
+
+function validarProducto(producto) {
+    // Valida que no este vacio
+    if (!producto  || producto === "" ) {
+        return false;
+    }
+
+    // Elimina espacios en blanco al inicio y al final
+    producto = producto.trim();
+
+    // Verifica caracteres permitidos
+    const regex = /^[a-zA-Z0-9\s]+$/;
+    if (!regex.test(producto)) {
+        return false;
+    }
+
+    // Si todo esta bien
+   return true;
+}
+
 $(document).on("click", "#btnModalAgregarProducto", function(e){
 
     var producto = $("#nuevoProducto").val();
@@ -17,12 +101,11 @@ $(document).on("click", "#btnModalAgregarProducto", function(e){
         data: {"datos": JSON.stringify(datos), "AgregarProducto": 1},
         dataType: "json",
         success: function (respuesta) {
-            console.log(respuesta);
 
             if (respuesta == "ya-hay-registro") {
 
                 Swal.fire({
-                    icon: "error",
+                    icon: "warning",
                     title: "El producto ya existe",
                     showConfirmButton: true,
                     confirmButtonText: "Cerrar",
@@ -136,9 +219,6 @@ $(document).on("click", ".btnEliminarProducto", function(){
                 valor: id
             }
 
-            // var datos = new FormData();
-            // datos.append("idProducto", id);
-
             $.ajax({
                 method: "POST",
                 url: "ajax/productos.ajax.php",
@@ -173,3 +253,106 @@ $(document).on("click", ".btnEliminarProducto", function(){
     });
 
 });
+
+// Editar Producto
+
+$(document).on("click", "#btnModalEditarProducto", function(e){
+    
+    let datos = {
+        tabla: "productos",
+        item: "producto",
+        valor: $("#editarProducto").val(),
+        id: $("#idProductoActual").val()
+
+    }
+
+    $.ajax({
+        method: "POST",
+        url: "ajax/productos.ajax.php",
+        data: {"editarDatos": JSON.stringify(datos), "EditarProducto": 1},
+        dataType: "json",
+        success: function(respuesta){
+
+            if (respuesta == "existe") {
+
+                Swal.fire({
+                    icon: "warning",
+                    title: "El producto ya existe",
+                    showConfirmButton: true,
+                    confirmButtonText: "Cerrar",
+                    closeOnConfirm: false
+
+                });
+
+                
+
+            } else if (respuesta == "existe-desactivado"){
+
+                Swal.fire({
+                    icon: "warning",
+                    title: "El producto ya existe, pero esta eliminado",
+                    showConfirmButton: true,
+                    confirmButtonText: "Cerrar",
+                    closeOnConfirm: false
+
+                });
+
+
+            } else {
+
+                Swal.fire({
+                    icon: "success",
+                    title: "El producto se ha editado correctamente!",
+                    showConfirmButton: true,
+                    confirmButtonText: "Cerrar",
+                    closeOnConfirm: false
+    
+                }).then((result) => {
+                    if (result.value) {
+                        window.location = "productos";
+                    }
+    
+                });
+
+            }
+ 
+        },
+        error: function (respuesta) {
+
+            console.log("Error: " + respuesta);
+        }
+    })
+
+
+})
+
+// Traer el valor del producto y mostrarlo en el input
+
+$(document).on("click", ".btnEditarProducto", function(){
+
+    let data = {
+        tabla: "productos",
+        item: "id",
+        valor: $(this).attr("idProducto"),
+
+    }
+
+    $.ajax({
+        method: "POST",
+        url: "ajax/productos.ajax.php",
+        data: {"consultarDatos": JSON.stringify(data), "ConsultarProducto": 1},
+        dataType: "json",
+        success: function(respuesta){
+            $("#editarProducto").val(respuesta["producto"]);
+            $("#idProductoActual").val(respuesta["id"]);
+ 
+        },
+        error: function (respuesta) {
+
+            console.log("Error: " + respuesta);
+        }
+    })
+
+    // console.log(mandar_info_ajax(data));
+
+})

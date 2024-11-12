@@ -87,7 +87,7 @@
                       
                       echo '<td>
                               <div class="btn-group">
-                                <button class="btn btn-warning"><i class="fa fa-pencil"></i></button>
+                                <button class="btn btn-warning btnEditarProducto" idProducto="'.$value["id"].'" data-toggle="modal" data-target="#modalEditarProducto"><i class="fa fa-pencil"></i></button>
                                 <button class="btn btn-danger btnEliminarProducto" idProducto="'.$value["id"].'" ><i class="fa fa-times"></i></button>
                               </div>
                             </td>';
@@ -143,6 +143,52 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
           <button type="button" id="btnModalAgregarProducto" class="btn btn-primary">Guardar</button>
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Modal -->
+<div id="modalEditarProducto" class="modal fade" role="dialog">
+
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+
+      <form role="form" enctype="multipart/form-data">
+
+        <!-- header modal -->
+
+        <div class="modal-header" style="background: #3c8dbc; color: white;">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Editar producto</h4>
+        </div>
+
+        <div class="modal-body">
+          <div class="box-body">
+            <!-- Input para el nombre del producto -->
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-code"></i></span>
+                <input type="text" class="form-control input-lg" name="editarProducto" id="editarProducto" placeholder="Ingresar producto" required>
+                <input type="hidden" id="idProductoActual">
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- modal footer -->
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
+          <button type="button" id="btnModalEditarProducto" class="btn btn-primary">Modificar</button>
         </div>
 
       </form>

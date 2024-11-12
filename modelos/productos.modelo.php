@@ -110,26 +110,34 @@ class ModeloProductos {
 
     }
 
-	// ACTIVAR PRODUCTO
+	// EDITAR PRODUCTO
 
-	static public function mdlActivarProducto($tabla, $datos) {
-		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET status = 1 WHERE producto = :producto");
-        $stmt -> bindParam(":producto", $datos, PDO::PARAM_INT);
+	static public function mdlEditarProducto($datos) {
 
-        if($stmt->execute()){
+		$aux = json_decode($datos, true);
 
-			return "ok";
+		$tabla = $aux["tabla"];
 
-		}else{
+		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET producto = :producto WHERE id = :id");
+			$stmt -> bindParam(":producto", $aux["valor"], PDO::PARAM_STR);
+			$stmt -> bindParam(":id", $aux["id"], PDO::PARAM_INT);
 
-			return "error";
-		
-		}
+			if($stmt->execute()){
 
+				return "ok";
+
+			}else{
+
+				return "error";
+			
+			}
+			
 		$stmt->close();
 		$stmt = null;
 
-    }
+	}
+
+		
 
 }
 
