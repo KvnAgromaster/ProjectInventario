@@ -113,7 +113,7 @@ session_start();
 
   ?>
 <!-- ./wrapper -->
-
+  <script src="vistas/Js/funciones.js"></script>
   <script src="vistas/Js/plantilla.js"></script>
   <script src="vistas/Js/productos.js"></script>
   <script src="vistas/Js/almacenes.js"></script> 

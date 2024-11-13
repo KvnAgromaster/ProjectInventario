@@ -20,7 +20,7 @@ $("#editarProducto").on("keyup", function() {
 
 function ValidarEnTiempoReal(inputValue, btn, input) {
 
-    if (!validarProducto(inputValue)) {
+    if (!validarCampo(inputValue)) {
 
         $(".alert").remove();
 
@@ -67,33 +67,6 @@ function ValidarEnTiempoReal(inputValue, btn, input) {
 
     }
 
-}
-
-function validarProducto(producto) {
-    // Valida que no este vacio
-    if (!producto  || producto === "" ) {
-        return false;
-    }
-
-    // Verifica caracteres permitidos
-    const regex = /^[a-zA-Z0-9\s]+$/;
-    if (!regex.test(producto)) {
-        return false;
-    }
-
-    // Si todo esta bien
-   return true;
-}
-
-// Obtener fecha y formatearla
-
-function formatoFecha(fecha, formato) {
-    const map = {
-        dd: fecha.getDate(),
-        mm: fecha.getMonth() + 1,
-        yyyy: fecha.getFullYear()
-    }
-    return formato.replace(/yyyy|mm|dd/gi, matched => map[matched])
 }
 
 $(document).on("click", "#btnModalAgregarProducto", function(e){

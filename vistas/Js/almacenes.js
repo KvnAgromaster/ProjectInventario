@@ -11,7 +11,7 @@ $("#nuevoAlmacen").on("keyup", function() {
 
 function ValidarEnTiempoReal(inputValue, btn, input) {
 
-    if (!validarAlmacen(inputValue)) {
+    if (!validarCampo(inputValue)) {
 
         $(".alert").remove();
 
@@ -57,22 +57,6 @@ function ValidarEnTiempoReal(inputValue, btn, input) {
 
     }
 
-}
-
-function validarAlmacen(almacen) {
-    // Valida que no este vacio
-    if (!almacen  || almacen === "" ) {
-        return false;
-    }
-
-    // Verifica caracteres permitidos
-    const regex = /^[a-zA-Z0-9\s]+$/;
-    if (!regex.test(almacen)) {
-        return false;
-    }
-
-    // Si todo esta bien
-   return true;
 }
 
 $(document).on("click", "#btnModalAgregarAlmacen", function(e){
