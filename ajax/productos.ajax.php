@@ -105,49 +105,49 @@ class AjaxProductos {
 
 }
 
-if (isset($_POST["AgregarProducto"])) {
+if (isset($_POST["identificador"]) && $_POST["identificador"] == "AgregarProducto") {
     $Producto = new AjaxProductos();
     $Producto -> producto = $_POST["datos"];
     $Producto -> ajaxCrearProducto();
 
 }
 
-if (isset($_POST["EliminarProducto"])) {
+if (isset($_POST["identificador"]) && $_POST["identificador"] == "EliminarProducto") {
 
     $ID = new AjaxProductos();
-    $ID -> producto = $_POST["datosEliminar"];
+    $ID -> producto = $_POST["datos"];
     $ID -> ajaxActualizarProducto();
 
 }
 
-if (isset($_POST["ActivarProducto"])) {
+if (isset($_POST["identificador"]) && $_POST["identificador"] == "ActivarProducto") {
 
-    $Producto = new AjaxProductos();
-    $Producto -> producto = $_POST["datosActivar"];
-    $Producto -> ajaxActualizarProducto();
+    $activarProducto = new AjaxProductos();
+    $activarProducto -> producto = $_POST["datos"];
+    $activarProducto -> ajaxActualizarProducto();
 
 }
 
-if (isset($_POST["ConsultarProducto"])) {
+if (isset($_POST["identificador"]) && $_POST["identificador"] == "ConsultarProducto") {
 
     $consultarProducto = new AjaxProductos();
-    $consultarProducto -> producto = $_POST["consultarDatos"];
+    $consultarProducto -> producto = $_POST["datos"];
     $consultarProducto -> ajaxConsultarProducto();
 
 }
 
-if (isset($_POST["EditarProducto"])) {
+if (isset($_POST["identificador"]) && $_POST["identificador"] == "EditarProducto") {
 
     $editarProducto = new AjaxProductos();
-    $editarProducto -> producto = $_POST["editarDatos"];
+    $editarProducto -> producto = $_POST["datos"];
     $editarProducto -> ajaxEditarProducto();
 
 }
 
-if (isset($_POST["ValidarProducto"])) {
+if (isset($_POST["identificador"]) && $_POST["identificador"] == "ValidarProducto") {
 
     $validar = new AjaxProductos();
-    $validar -> validacion = $_POST["datosValidar"];
+    $validar -> validacion = $_POST["datos"];
     $validar -> ajaxValidarInput();
 
 }

@@ -5,7 +5,7 @@ $("#nuevoProducto").on("keyup", function() {
 
     timeoutId = setTimeout(function() {
         let currentInputValue = $("#nuevoProducto").val();
-        ValidarEnTiempoReal(currentInputValue, "#btnModalAgregarProducto", "#nuevoProducto");
+        ValidarProducto(currentInputValue, "#btnModalAgregarProducto", "#nuevoProducto");
     }, 800);
 });
 
@@ -14,11 +14,11 @@ $("#editarProducto").on("keyup", function() {
 
     timeoutId = setTimeout(function() {
         let currentInputValue = $("#editarProducto").val();
-        ValidarEnTiempoReal(currentInputValue, "#btnModalEditarProducto", "#editarProducto");
+        ValidarProducto(currentInputValue, "#btnModalEditarProducto", "#editarProducto");
     }, 800);
 });
 
-function ValidarEnTiempoReal(inputValue, btn, input) {
+function ValidarProducto(inputValue, btn, input) {
 
     if (!validarCampo(inputValue)) {
 
@@ -33,37 +33,28 @@ function ValidarEnTiempoReal(inputValue, btn, input) {
         $(".alert").remove();
         $(btn).prop("disabled", false);
 
-        var dato = {
+        var datos = {
+            url: "ajax/productos.ajax.php",
+            identificador: "ValidarProducto",
             tabla: "productos",
             item: "producto",
             valor: inputValue
         };
 
-        $.ajax({
-            method: "POST",
-            url: "ajax/productos.ajax.php",
-            data: {"datosValidar": JSON.stringify(dato), "ValidarProducto": 1},
-            dataType: "json",
-            success: function (respuesta) {
-                console.log(respuesta);
-                if (respuesta == "Si existe") {
+        MandarInfoAjax(datos, (respuesta) => { 
+            if (respuesta == "Si existe") {
                     
-                    $(input).parent().after('<div class="alert alert-warning">El producto ya existe</div>');
-
-                    $(btn).prop("disabled", true);
-
-                } else if (respuesta == "existe-desactivado") {
-
-                    $(input).parent().after('<div class="alert alert-warning">El producto esta desactivado</div>');
-
-                }
-                
-            },
-
-            error: function (respuesta) {
-                console.log("Error: " + respuesta);
+                $(input).parent().after('<div class="alert alert-warning">El producto ya existe</div>');
+    
+                $(btn).prop("disabled", true);
+    
+            } else if (respuesta == "existe-desactivado") {
+    
+                $(input).parent().after('<div class="alert alert-warning">El producto esta desactivado</div>');
+    
             }
-        });
+
+        })
 
     }
 
@@ -74,6 +65,8 @@ $(document).on("click", "#btnModalAgregarProducto", function(e){
     var producto = $("#nuevoProducto").val();
 
     var datos = {
+        url: "ajax/productos.ajax.php",
+        identificador: "AgregarProducto",
         valor: producto,
         status: 1,
         item: "producto",
@@ -82,101 +75,74 @@ $(document).on("click", "#btnModalAgregarProducto", function(e){
 
     }
 
-    $.ajax({
-        method: "POST",
-        url: "ajax/productos.ajax.php",
-        data: {"datos": JSON.stringify(datos), "AgregarProducto": 1},
-        dataType: "json",
-        success: function (respuesta) {
+    MandarInfoAjax(datos, (respuesta) => {
+        if (respuesta == "ya-hay-registro") {
 
-            if (respuesta == "ya-hay-registro") {
+            Swal.fire({
+                icon: "warning",
+                title: "El producto ya existe",
+                showConfirmButton: true,
+                confirmButtonText: "Cerrar",
+                closeOnConfirm: false
 
-                Swal.fire({
-                    icon: "warning",
-                    title: "El producto ya existe",
-                    showConfirmButton: true,
-                    confirmButtonText: "Cerrar",
-                    closeOnConfirm: false
+            });
 
-                });
+        } else if (respuesta == "Validacion") {
 
-            } else if (respuesta == "Validacion") {
+            Swal.fire({
+                title: "El producto ya existe, pero esta deshabilitado",
+                text: "Desea habilitarlo?",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'No',
+                confirmButtonText: 'Si'
+        
+            }).then((result)=> {
+        
+                if (result.value) {
 
-                Swal.fire({
-                    title: "El producto ya existe, pero esta deshabilitado",
-                    text: "Desea habilitarlo?",
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    cancelButtonText: 'No',
-                    confirmButtonText: 'Si'
+                    datos.identificador = "ActivarProducto";
+
+                    MandarInfoAjax(datos, (respuesta) => {
+                            
+                        Swal.fire({
+                            icon: "success",
+                            title: "El producto se agrego correctamente!",
+                            showConfirmButton: true,
+                            confirmButtonText: "Cerrar",
+                            closeOnConfirm: false
             
-                }).then((result)=> {
-            
-                    if (result.value) {
-
-                        var datos = {
-                            tabla: "productos",
-                            item: "producto",
-                            valor: producto
-                        }
-
-                        $.ajax({
-                            method: "POST",
-                            url: "ajax/productos.ajax.php",
-                            data: {"datosActivar": JSON.stringify(datos), "ActivarProducto": 1},
-                            dataType: "json",
-                            success: function(respuesta){
-            
-                                console.log(respuesta);
-                                
-                                Swal.fire({
-                                    icon: "success",
-                                    title: "El producto se agrego correctamente!",
-                                    showConfirmButton: true,
-                                    confirmButtonText: "Cerrar",
-                                    closeOnConfirm: false
-                    
-                                }).then((result) => {
-                                    if (result.value) {
-                                        window.location = "productos";
-                                    }
-                    
-                                });
-                                
-                            },
-                            error: function (respuesta) {
-                                console.log("Error: " + respuesta);
+                        }).then((result) => {
+                            if (result.value) {
+                                window.location = "productos";
                             }
-                        })
-                    }
-
-                    
             
-                });
+                        });
 
-            } else {
+                    })
 
-                Swal.fire({
-                    icon: "success",
-                    title: "El producto se agrego correctamente!",
-                    showConfirmButton: true,
-                    confirmButtonText: "Cerrar",
-                    closeOnConfirm: false
-    
-                }).then((result) => {
-                    if (result.value) {
-                        window.location = "productos";
-                    }
-    
-                });
+                }
+        
+            });
 
-            }
-        },
+        } else {
 
-        error: function (respuesta) {
-            console.log("Error: " + respuesta);
+            Swal.fire({
+                icon: "success",
+                title: "El producto se agrego correctamente!",
+                showConfirmButton: true,
+                confirmButtonText: "Cerrar",
+                closeOnConfirm: false
+
+            }).then((result) => {
+                if (result.value) {
+                    window.location = "productos";
+                }
+
+            });
+
         }
     });
 
@@ -201,38 +167,29 @@ $(document).on("click", ".btnEliminarProducto", function(){
         if (result.value) {
 
             var datos = {
+                url: "ajax/productos.ajax.php",
+                identificador: "EliminarProducto",
                 tabla: "productos",
                 item: "id",
                 valor: id
             }
 
-            $.ajax({
-                method: "POST",
-                url: "ajax/productos.ajax.php",
-                data: {"datosEliminar": JSON.stringify(datos), "EliminarProducto": 1},
-                dataType: "json",
-                success: function(respuesta){
+            MandarInfoAjax(datos, (respuesta) => { 
 
-                    console.log(respuesta);
-                    
-                    Swal.fire({
-                        icon: "success",
-                        title: "El producto ha sido borrado correctamente!",
-                        showConfirmButton: true,
-                        confirmButtonText: "Cerrar",
-                        closeOnConfirm: false
+                Swal.fire({
+                    icon: "success",
+                    title: "El producto ha sido borrado correctamente!",
+                    showConfirmButton: true,
+                    confirmButtonText: "Cerrar",
+                    closeOnConfirm: false
 
-                    }).then((result) => {
-                        if (result.value) {
-                            window.location = "productos";
-                        }
+                }).then((result) => {
+                    if (result.value) {
+                        window.location = "productos";
+                    }
 
-                    });
-                    
-                },
-                error: function (respuesta) {
-                    console.log("Error: " + respuesta);
-                }
+                });
+
             })
 
         }
@@ -254,6 +211,8 @@ $(document).on("click", "#btnModalEditarProducto", function(e){
     const fechaHora = formatoFecha(fecha, 'yyyy/mm/dd') + " " + hora;
     
     let datos = {
+        url: "ajax/productos.ajax.php",
+        identificador: "EditarProducto",
         tabla: "productos",
         item: "producto",
         valor: $("#editarProducto").val(),
@@ -262,63 +221,52 @@ $(document).on("click", "#btnModalEditarProducto", function(e){
 
     }
 
-    $.ajax({
-        method: "POST",
-        url: "ajax/productos.ajax.php",
-        data: {"editarDatos": JSON.stringify(datos), "EditarProducto": 1},
-        dataType: "json",
-        success: function(respuesta){
+    MandarInfoAjax(datos, (respuesta) => {
+                            
+        if (respuesta == "existe") {
 
-            if (respuesta == "existe") {
+            Swal.fire({
+                icon: "warning",
+                title: "El producto ya existe",
+                showConfirmButton: true,
+                confirmButtonText: "Cerrar",
+                closeOnConfirm: false
 
-                Swal.fire({
-                    icon: "warning",
-                    title: "El producto ya existe",
-                    showConfirmButton: true,
-                    confirmButtonText: "Cerrar",
-                    closeOnConfirm: false
+            });
 
-                });
+            
 
-                
+        } else if (respuesta == "existe-desactivado"){
 
-            } else if (respuesta == "existe-desactivado"){
+            Swal.fire({
+                icon: "warning",
+                title: "El producto ya existe, pero esta eliminado",
+                showConfirmButton: true,
+                confirmButtonText: "Cerrar",
+                closeOnConfirm: false
 
-                Swal.fire({
-                    icon: "warning",
-                    title: "El producto ya existe, pero esta eliminado",
-                    showConfirmButton: true,
-                    confirmButtonText: "Cerrar",
-                    closeOnConfirm: false
-
-                });
+            });
 
 
-            } else {
+        } else {
 
-                Swal.fire({
-                    icon: "success",
-                    title: "El producto se ha editado correctamente!",
-                    showConfirmButton: true,
-                    confirmButtonText: "Cerrar",
-                    closeOnConfirm: false
-    
-                }).then((result) => {
-                    if (result.value) {
-                        window.location = "productos";
-                    }
-    
-                });
+            Swal.fire({
+                icon: "success",
+                title: "El producto se ha editado correctamente!",
+                showConfirmButton: true,
+                confirmButtonText: "Cerrar",
+                closeOnConfirm: false
 
-            }
- 
-        },
-        error: function (respuesta) {
+            }).then((result) => {
+                if (result.value) {
+                    window.location = "productos";
+                }
 
-            console.log("Error: " + respuesta);
+            });
+
         }
-    })
 
+    })
 
 })
 
@@ -326,27 +274,20 @@ $(document).on("click", "#btnModalEditarProducto", function(e){
 
 $(document).on("click", ".btnEditarProducto", function(){
 
-    let data = {
+    let datos = {
+        url: "ajax/productos.ajax.php",
+        identificador: "ConsultarProducto",
         tabla: "productos",
         item: "id",
         valor: $(this).attr("idProducto"),
 
     }
 
-    $.ajax({
-        method: "POST",
-        url: "ajax/productos.ajax.php",
-        data: {"consultarDatos": JSON.stringify(data), "ConsultarProducto": 1},
-        dataType: "json",
-        success: function(respuesta){
-            $("#editarProducto").val(respuesta["producto"]);
-            $("#idProductoActual").val(respuesta["id"]);
- 
-        },
-        error: function (respuesta) {
+    MandarInfoAjax(datos, (respuesta) => {
+                            
+        $("#editarProducto").val(respuesta["producto"]);
+        $("#idProductoActual").val(respuesta["id"]);
 
-            console.log("Error: " + respuesta);
-        }
     })
 
 })
