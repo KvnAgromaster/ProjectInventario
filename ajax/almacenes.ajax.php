@@ -44,6 +44,30 @@ class AjaxAlmacenes {
 
     }
 
+    public $validacion;
+
+    public function ajaxValidarInput() {
+
+        $datos = $this -> validacion;
+        $respuesta = ModeloAlmacenes::mdlMostrarAlmacenes($datos);
+        
+        
+        if ($respuesta && $respuesta["status"] == 0) {
+
+            echo json_encode("existe-desactivado");
+
+        } else if ($respuesta) {
+            
+            echo json_encode("Si existe");
+            
+        } else {
+
+            echo json_encode("no existe");
+
+        }
+
+    }
+
 }
 
 if (isset($_POST["AgregarAlmacen"])) {
@@ -58,5 +82,13 @@ if (isset($_POST["ActivarAlmacen"])) {
     $Almacen = new AjaxAlmacenes();
     $Almacen -> almacen = $_POST["datosActivar"];
     $Almacen -> ajaxActualizarAlmacen();
+
+}
+
+if (isset($_POST["ValidarAlmacen"])) {
+
+    $validar = new AjaxAlmacenes();
+    $validar -> validacion = $_POST["datosValidar"];
+    $validar -> ajaxValidarInput();
 
 }

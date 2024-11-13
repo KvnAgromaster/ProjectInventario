@@ -1,3 +1,80 @@
+
+
+$("#nuevoAlmacen").on("keyup", function() {
+    clearTimeout(timeoutId);    // Evita acumulaciones
+
+    timeoutId = setTimeout(function() {
+        let currentInputValue = $("#nuevoAlmacen").val();
+        ValidarEnTiempoReal(currentInputValue, "#btnModalAgregarAlmacen", "#nuevoAlmacen");
+    }, 800);
+});
+
+function ValidarEnTiempoReal(inputValue, btn, input) {
+
+    if (!validarAlmacen(inputValue)) {
+
+        $(".alert").remove();
+
+        $(input).parent().after('<div class="alert alert-warning">El almacen no puede contener caracteres especiales o ir vacio</div>');
+
+        $(btn).prop("disabled", true);
+
+    } else {
+
+        $(".alert").remove();
+        $(btn).prop("disabled", false);
+
+        var dato = {
+            tabla: "almacenes",
+            item: "almacen",
+            valor: inputValue
+        };
+
+        $.ajax({
+            method: "POST",
+            url: "ajax/almacenes.ajax.php",
+            data: {"datosValidar": JSON.stringify(dato), "ValidarAlmacen": 1},
+            dataType: "json",
+            success: function (respuesta) {
+                if (respuesta == "Si existe") {
+                    
+                    $(input).parent().after('<div class="alert alert-warning">El almacen ya existe</div>');
+
+                    $(btn).prop("disabled", true);
+
+                } else if (respuesta == "existe-desactivado") {
+
+                    $(input).parent().after('<div class="alert alert-warning">El almacen esta desactivado</div>');
+
+                }
+                
+            },
+
+            error: function (respuesta) {
+                console.log("Error: " + respuesta);
+            }
+        });
+
+    }
+
+}
+
+function validarAlmacen(almacen) {
+    // Valida que no este vacio
+    if (!almacen  || almacen === "" ) {
+        return false;
+    }
+
+    // Verifica caracteres permitidos
+    const regex = /^[a-zA-Z0-9\s]+$/;
+    if (!regex.test(almacen)) {
+        return false;
+    }
+
+    // Si todo esta bien
+   return true;
+}
+
 $(document).on("click", "#btnModalAgregarAlmacen", function(e){
 
     var almacen = $("#nuevoAlmacen").val();
@@ -19,8 +96,6 @@ $(document).on("click", "#btnModalAgregarAlmacen", function(e){
         data: {"datos": JSON.stringify(datos), "AgregarAlmacen": 1},
         dataType: "json",
         success: function (respuesta) {
-
-            console.log(respuesta);
 
             if (respuesta == "ya-hay-registro") {
 
