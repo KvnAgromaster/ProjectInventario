@@ -1,103 +1,156 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1>
-        Almacenes
-        <small>Panel de Control</small>
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Examples</a></li>
-        <li class="active">Blank page</li>
-      </ol>
-    </section>
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      Almacenes
+      <small>Panel de Control</small>
+    </h1>
+    <ol class="breadcrumb">
+      <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+      <li><a href="#">Examples</a></li>
+      <li class="active">Blank page</li>
+    </ol>
+  </section>
 
-    <!-- Main content -->
-    <section class="content">
+  <!-- Main content -->
+  <section class="content">
 
-        <div class="box-header with-border">
-          <button class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarAlmacen">Agregar</button>
-        </div>
+      <div class="box-header with-border">
+        <button class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarAlmacen">Agregar</button>
+      </div>
 
-      <!-- Default box -->
-      <div class="box">
-        <div class="box-body">
-          <table class="table table-bordered table-striped tablas" style="padding: 5px;">
+    <!-- Default box -->
+    <div class="box">
+      <div class="box-body">
+        <table class="table table-bordered table-striped tablas" style="padding: 5px;">
 
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Nombre</th>
-                <th>Direccion</th>
-                <th>Agregado</th>
-                <th>Ultima Modificacion</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <?php
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nombre</th>
+              <th>Direccion</th>
+              <th>Agregado</th>
+              <th>Ultima Modificacion</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            <?php
 
-                  $item = null;
-                  $valor = null;
+              $item = null;
+              $valor = null;
 
-                  // Creacion de JSON 
+              // Creacion de JSON 
 
-                  $json = array("tabla" => "almacenes",
-                                  "item" => $item,
-                                  "valor" => $valor);
+              $json = array("tabla" => "almacenes",
+                              "item" => $item,
+                              "valor" => $valor);
 
-                  $datos = json_encode($json);
-                                  
+              $datos = json_encode($json);
+                              
 
-                  $index = 0;
+              $index = 0;
 
-                  $almacenes = ModeloAlmacenes::mdlMostrarAlmacenes($datos);
+              $almacenes = ModeloAlmacenes::mdlMostrarAlmacenes($datos);
 
-                  foreach ($almacenes as $key => $value) {
+              foreach ($almacenes as $key => $value) {
 
-                    $index += 1; // Incremento
+                if ($value["status"] == 1) {
 
-                      echo '<tr>
-                      <td>'.$index.'</td>
-                      <td>'.$value["almacen"].'</td>
-                      <td>'.$value["direccion"].'</td>
-                      <td>'.$value["fecha"].'</td>';
+                  $index += 1; // Incremento
 
-                      if ($value["ultima_modificacion"]) {
+                  echo '<tr>
+                  <td>'.$index.'</td>
+                  <td>'.$value["almacen"].'</td>
+                  <td>'.$value["direccion"].'</td>
+                  <td>'.$value["fecha"].'</td>';
 
-                        echo '<td>'.$value["ultima_modificacion"].'</td>';
+                  if ($value["ultima_modificacion"]) {
 
-                      } else {
+                    echo '<td>'.$value["ultima_modificacion"].'</td>';
 
-                        echo '<td> - </td>';
+                  } else {
 
-                      }
-
-                      echo '<td>
-                              <div class="btn-group">
-                                <button class="btn btn-warning btnEditarAlmacen" idAlmacen="'.$value["id"].'" data-toggle="modal" data-target="#modalEditarAlmacen"><i class="fa fa-pencil"></i></button>
-
-                                <button class="btn btn-danger btnEliminarAlmacen" idAlmacen="'.$value["id"].'" ><i class="fa fa-times"></i></button>
-                              </div>
-                            </td>';
+                    echo '<td> - </td>';
 
                   }
 
-                ?>
+                  echo '<td>
+                          <div class="btn-group">
+                            <button class="btn btn-warning btnEditarAlmacen" idAlmacen="'.$value["id"].'" data-toggle="modal" data-target="#modalEditarAlmacen"><i class="fa fa-pencil"></i></button>
 
-              </tr>
-            </tbody>
+                            <button class="btn btn-danger btnEliminarAlmacen" idAlmacen="'.$value["id"].'" ><i class="fa fa-times"></i></button>
+                          </div>
+                        </td>';
+                }
 
-          </table>
+              }
 
-        </div>
-        
+              ?>
+
+          </tbody>
+
+        </table>
+
       </div>
-      <!-- /.box -->
+      
+    </div>
+    <!-- /.box -->
 
-    </section>
-    <!-- /.content -->
-  </div>
+  </section>
+  <!-- /.content -->
+</div>
   <!-- /.content-wrapper -->
+
+<div id="modalAgregarAlmacen" class="modal fade" role="dialog">
+
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+
+      <form role="form" enctype="multipart/form-data">
+
+        <!-- header modal -->
+
+        <div class="modal-header" style="background: #3c8dbc; color: white;">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Agregar almacen</h4>
+        </div>
+
+        <div class="modal-body">
+          <div class="box-body">
+            <!-- Input para el nombre del almacen -->
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-code"></i></span>
+                <input type="text" class="form-control input-lg" name="nuevoAlmacen" id="nuevoAlmacen" placeholder="Ingresar Almacen" required>
+              </div>
+            </div>
+            
+            <!-- Input para la direccion -->
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+                <input type="text" class="form-control input-lg" name="nuevaDireccion" id="nuevaDireccion" placeholder="Ingresar direccion" required>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- modal footer -->
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
+          <button type="button" id="btnModalAgregarAlmacen" class="btn btn-primary">Guardar</button>
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</div>
