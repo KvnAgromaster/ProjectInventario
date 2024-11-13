@@ -349,6 +349,4 @@ $(document).on("click", ".btnEditarProducto", function(){
         }
     })
 
-    // console.log(mandar_info_ajax(data));
-
 })

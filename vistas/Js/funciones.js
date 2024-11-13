@@ -25,3 +25,25 @@ function formatoFecha(fecha, formato) {
     }
     return formato.replace(/yyyy|mm|dd/gi, matched => map[matched])
 }
+
+function MandarInfoAjax(datos, callback) {
+
+    let identificador = datos.identificador;
+
+    $.ajax({
+        method: "POST",
+        url: datos.url,
+        data: {
+            "datos": JSON.stringify(datos), 
+            "identificador" : identificador
+        },
+        dataType: "json",
+        success: function (respuesta) {
+            callback(respuesta); // Ejecuta el callback pasando la respuesta
+        },
+        error: function (respuesta) {
+            console.log("Error: " + respuesta);
+        }
+    });
+}
+
