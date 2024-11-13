@@ -149,3 +149,55 @@
   </div>
 
 </div>
+
+<div id="modalEditarAlmacen" class="modal fade" role="dialog">
+
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+
+      <form role="form" enctype="multipart/form-data">
+
+        <!-- header modal -->
+
+        <div class="modal-header" style="background: #3c8dbc; color: white;">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Editar almacen</h4>
+        </div>
+
+        <div class="modal-body">
+          <div class="box-body">
+            <!-- Input para el nombre del almacen -->
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-code"></i></span>
+                <input type="text" class="form-control input-lg" name="editarAlmacen" id="editarAlmacen" placeholder="Ingresar Almacen" required>
+                <input type="hidden" id="idAlmacenActual">
+              </div>
+            </div>
+            
+            <!-- Input para la direccion -->
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+                <input type="text" class="form-control input-lg" name="editarDireccion" id="editarDireccion" placeholder="Ingresar direccion" required>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- modal footer -->
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
+          <button type="button" id="btnModalEditarAlmacen" class="btn btn-primary">Modificar</button>
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</div>

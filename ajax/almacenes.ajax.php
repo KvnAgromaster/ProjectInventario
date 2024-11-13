@@ -32,7 +32,6 @@ class AjaxAlmacenes {
 
     }
 
-    public $idAlmacen;
 
     public function ajaxActualizarAlmacen() {
 
@@ -68,6 +67,42 @@ class AjaxAlmacenes {
 
     }
 
+    public function ajaxConsultarAlmacen() {
+
+        $datos = $this -> almacen;
+
+        $respuesta = ModeloAlmacenes::mdlMostrarAlmacenes($datos);
+        
+        echo json_encode($respuesta);
+
+    }
+
+    public function ajaxEditarAlmacen() {
+
+        $datos = $this -> almacen;
+
+        $respuesta = ModeloAlmacenes::mdlMostrarAlmacenes($datos);
+
+        if ($respuesta) {
+
+            if ($respuesta && $respuesta["status"] == 0) {
+
+                echo json_encode("existe-desactivado");
+
+            } else {
+
+                echo json_encode("existe");
+
+            }
+            
+        } else {
+
+            $respuesta = ModeloAlmacenes::mdlEditarAlmacen($datos);
+            echo json_encode($respuesta);
+        }
+
+    }
+
 }
 
 if (isset($_POST["identificador"]) && $_POST["identificador"] == "AgregarAlmacen") {
@@ -90,5 +125,29 @@ if (isset($_POST["identificador"]) && $_POST["identificador"] == "ValidarAlmacen
     $validar = new AjaxAlmacenes();
     $validar -> validacion = $_POST["datos"];
     $validar -> ajaxValidarInput();
+
+}
+
+if (isset($_POST["identificador"]) && $_POST["identificador"] == "EliminarAlmacen") {
+
+    $validar = new AjaxAlmacenes();
+    $validar -> almacen = $_POST["datos"];
+    $validar -> ajaxActualizarAlmacen();
+
+}
+
+if (isset($_POST["identificador"]) && $_POST["identificador"] == "ConsultarAlmacen") {
+
+    $consultarAlmacen = new AjaxAlmacenes();
+    $consultarAlmacen -> almacen = $_POST["datos"];
+    $consultarAlmacen -> ajaxConsultarAlmacen();
+
+}
+
+if (isset($_POST["identificador"]) && $_POST["identificador"] == "EditarAlmacen") {
+
+    $editarAlmacen= new AjaxAlmacenes();
+    $editarAlmacen-> almacen = $_POST["datos"];
+    $editarAlmacen-> ajaxEditarAlmacen();
 
 }

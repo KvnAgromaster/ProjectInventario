@@ -110,4 +110,33 @@ class ModeloAlmacenes {
 		// $stmt = null;
     }
 
+	// EDITAR PRODUCTO
+
+	static public function mdlEditarAlmacen($datos) {
+
+		$aux = json_decode($datos, true);
+
+		$tabla = $aux["tabla"];
+
+		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET almacen = :almacen, direccion = :direccion, ultima_modificacion = :ultima_modificacion WHERE id = :id");
+			$stmt -> bindParam(":almacen", $aux["valor"], PDO::PARAM_STR);
+			$stmt -> bindParam(":direccion", $aux["direccion"], PDO::PARAM_STR);
+			$stmt -> bindParam(":ultima_modificacion", $aux["fecha"], PDO::PARAM_STR);
+			$stmt -> bindParam(":id", $aux["id"], PDO::PARAM_INT);
+
+			if($stmt->execute()){
+
+				return "ok";
+
+			}else{
+
+				return "error";
+			
+			}
+
+		$stmt->close();
+		$stmt = null;
+
+	}
+
 }
