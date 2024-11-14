@@ -18,7 +18,7 @@
       <!-- Default box -->
       <div class="box box-primary">
         <div class="box-body">
-            <table class="table table-bordered table-striped tablas" style="padding: 5px;">
+            <table class="table table-striped tablas" style="padding: 5px;">
               <thead>
                 <tr>
                   <th>#</th>
