@@ -47,3 +47,16 @@ function MandarInfoAjax(datos, callback) {
     });
 }
 
+function esUnNumero(input) {
+    return !isNaN(input) && typeof input === 'number';
+}
+
+function validarMov(lista) {
+    for (const item of lista) {
+        if (!validarCampo(item)) {
+
+            return false;
+        }
+    }
+    return true;
+}
