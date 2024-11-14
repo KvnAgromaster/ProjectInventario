@@ -67,41 +67,45 @@
 
                       foreach ($movimientos as $key => $value) {
 
-                        $index += 1; // Incremento
+                        if ($value["status"] == 1) {
 
-                        if ($value["tipo_movimiento"] == 1) { //ENTRADA
+                          $index++; // Incremento
 
-                          echo '<tr class="success">';
+                          if ($value["tipo_movimiento"] == 1) { //ENTRADA
 
-                        } else {
+                            echo '<tr class="success">';
 
-                          echo '<tr class="danger">';
+                          } else {
+
+                            echo '<tr class="danger">';
+
+                          }
+
+                          echo '<td>'.$index.'</td>
+                              <td>'.$value["almacen"].'</td>
+                              <td>'.$value["producto"].'</td>
+                              <td>'.$value["cantidad"].'</td>
+                              <td>'.$value["fecha"].'</td>';
+
+                          if ($value["ultima_modificacion"]) {
+
+                            echo '<td>'.$value["ultima_modificacion"].'</td>';
+    
+                          } else {
+    
+                            echo '<td> - </td>';
+                          
+                          }
+        
+
+                          echo '<td>
+                                    <div class="btn-group">
+                                      <button class="btn btn-xs btn-warning btnEditarMovimiento" idMovimiento="'.$value["id"].'" data-toggle="modal" data-target="#modalEditarMovimiento"><i class="fa fa-pencil"></i></button>
+                                      <button class="btn btn-xs btn-danger btnEliminarMovimiento" idMovimiento="'.$value["id"].'" ><i class="fa fa-times"></i></button>
+                                    </div>
+                                  </td>';
 
                         }
-
-                        echo '<td>'.$index.'</td>
-                            <td>'.$value["almacen"].'</td>
-                            <td>'.$value["producto"].'</td>
-                            <td>'.$value["cantidad"].'</td>
-                            <td>'.$value["fecha"].'</td>';
-
-                        if ($value["ultima_modificacion"]) {
-
-                          echo '<td>'.$value["ultima_modificacion"].'</td>';
-  
-                        } else {
-  
-                          echo '<td> - </td>';
-                        
-                        }
-      
-
-                        echo '<td>
-                                  <div class="btn-group">
-                                    <button class="btn btn-warning btnEditarProducto" idProducto="'.$value["id"].'" data-toggle="modal" data-target="#modalEditarProducto"><i class="fa fa-pencil"></i></button>
-                                    <button class="btn btn-danger btnEliminarProducto" idProducto="'.$value["id"].'" ><i class="fa fa-times"></i></button>
-                                  </div>
-                                </td>';
 
                       }
 

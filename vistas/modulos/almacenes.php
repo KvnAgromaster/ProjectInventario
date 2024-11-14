@@ -54,7 +54,7 @@
 
                 if ($value["status"] == 1) {
 
-                  $index += 1; // Incremento
+                  $index++; // Incremento
 
                   echo '<tr>
                   <td>'.$index.'</td>

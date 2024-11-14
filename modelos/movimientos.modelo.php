@@ -65,4 +65,31 @@ class ModeloMovimientos {
 
 	}
 
+    // ACTUALIZAR PRODUCTO
+
+	static public function mdlEliminarMovimiento($datos) {
+
+		$aux = json_decode($datos, true);
+
+		$tabla = $aux["tabla"];
+		$item = $aux["item"];
+
+		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET status = 0 WHERE $item = :id");
+		$stmt -> bindParam(":id", $aux["valor"], PDO::PARAM_INT);
+
+        if($stmt->execute()){
+
+            return "ok";
+
+        }else{
+
+            return "error";
+        
+        }
+
+		$stmt->close();
+		$stmt = null;
+
+    }
+
 }

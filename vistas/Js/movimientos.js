@@ -69,3 +69,55 @@ $(document).on("click", "#btnModalAgregarMovimiento", function(e){
     }
 
 })
+
+$(document).on("click", ".btnEliminarMovimiento", function(){
+
+    let id = $(this).attr("idMovimiento");
+
+    Swal.fire({
+        title: "Esta seguro de borrar el movimiento?",
+        text: "Si no lo esta puede cancelar la accion!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Si, borralo 😈!'
+
+    }).then((result)=> {
+
+        if (result.value) {
+
+            var datos = {
+                url: "ajax/movimientos.ajax.php",
+                identificador: "EliminarMovimiento",
+                tabla: "movimientos",
+                item: "id",
+                valor: id
+            }
+
+            MandarInfoAjax(datos, (respuesta) => { 
+
+                console.log(respuesta);
+
+                Swal.fire({
+                    icon: "success",
+                    title: "El registro ha sido borrado correctamente!",
+                    showConfirmButton: true,
+                    confirmButtonText: "Cerrar",
+                    closeOnConfirm: false
+
+                }).then((result) => {
+                    if (result.value) {
+                        window.location = "inventario";
+                    }
+
+                });
+
+            })
+
+        }
+
+    });
+
+})
