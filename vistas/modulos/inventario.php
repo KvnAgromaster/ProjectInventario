@@ -12,23 +12,94 @@
     <section class="content">
 
       <div class="box-header with-border">
-        <button class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarMovimiento">Agregar Nuevo Movimiento</button>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarMovimiento">Nuevo Movimiento</button>
       </div>
 
       <!-- Default box -->
       <div class="box">
         <div class="box-body">
-        <table class="table table-striped tablas">
-          <thead>
-            <th>#</th>
-            <th>Almacen</th>
-            <th>Producto</th>
-            <th>Cantidad</th>
-            <th>Fecha</th>
-            <th>Acciones</th>
-          </thead>
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
 
-        </table>
+              <li>
+                <a href="#tab_1" data-toggle="tab"><Strong>Inventarios</Strong></a>
+              </li>
+
+              <li class="active">
+                <a href="#tab_2" data-toggle="tab"><strong>Movimientos</strong></a>
+              </li>
+
+            </ul>
+            <div class="tab-content">
+
+              <div class="tab-pane" id="tab_1">
+                Hola
+              </div>
+
+              <div class="tab-pane active" id="tab_2">
+                <table class="table table-striped table-condensed tablas">
+                  <thead>
+                    <th>#</th>
+                    <th>Almacen</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+                  </thead>
+                  <tbody>
+                    <?php 
+
+                      $item = null;
+                      $valor = null;
+
+                      // Creacion de JSON 
+
+                      $json = array("tabla" => "movimientos",
+                                      "item" => $item,
+                                      "valor" => $valor);
+
+                      $datos = json_encode($json);
+                                      
+                      $index = 0;
+
+                      $movimientos = ModeloMovimientos::mdlMostrarMovimientos($datos);
+
+                      foreach ($movimientos as $key => $value) {
+
+                        $index += 1; // Incremento
+
+                        if ($value["tipo_movimiento"] == 1) { //ENTRADA
+
+                          echo '<tr class="success">';
+
+                        } else {
+
+                          echo '<tr class="danger">';
+
+                        }
+
+                        echo '<td>'.$index.'</td>
+                            <td>'.$value["almacen"].'</td>
+                            <td>'.$value["producto"].'</td>
+                            <td>'.$value["cantidad"].'</td>
+                            <td>'.$value["fecha"].'</td>';
+
+                        echo '<td>
+                                  <div class="btn-group">
+                                    <button class="btn btn-warning btnEditarProducto" idProducto="'.$value["id"].'" data-toggle="modal" data-target="#modalEditarProducto"><i class="fa fa-pencil"></i></button>
+                                    <button class="btn btn-danger btnEliminarProducto" idProducto="'.$value["id"].'" ><i class="fa fa-times"></i></button>
+                                  </div>
+                                </td>';
+
+                      }
+
+                    ?>
+                  </tbody>
+                </table>
+              </div>
+            </div>     
+          </div>
+      
         </div>
 
       </div>
