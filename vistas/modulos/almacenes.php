@@ -16,7 +16,7 @@
       </div>
 
     <!-- Default box -->
-    <div class="box">
+    <div class="box box-primary">
       <div class="box-body">
         <table class="table table-striped tablas">
 

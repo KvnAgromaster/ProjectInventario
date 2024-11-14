@@ -42,12 +42,13 @@ class ModeloMovimientos {
 
 		$tabla = $aux["tabla"];
 
-		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(almacen, producto, cantidad, tipo_movimiento) VALUES (:almacen, :producto, :cantidad, :tipo_mov)");
+		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(almacen, producto, cantidad, tipo_movimiento, status) VALUES (:almacen, :producto, :cantidad, :tipo_mov, :status)");
 
         $stmt->bindParam(":producto", $aux["producto"], PDO::PARAM_STR);
         $stmt->bindParam(":almacen", $aux["almacen"], PDO::PARAM_STR);
         $stmt->bindParam(":cantidad", $aux["cantidad"], PDO::PARAM_STR);
         $stmt->bindParam(":tipo_mov", $aux["tipoMov"], PDO::PARAM_INT);
+        $stmt->bindParam(":status", $aux["status"], PDO::PARAM_STR);
 
 		if($stmt->execute()){
 

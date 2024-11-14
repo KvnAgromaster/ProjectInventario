@@ -43,11 +43,10 @@ $(document).on("click", "#btnModalAgregarMovimiento", function(e){
             producto: productoMov,
             almacen: almacenMov,
             cantidad: cantidad,
-            tipoMov: tipo_movimiento
+            tipoMov: tipo_movimiento,
+            status: 1,
     
         }
-    
-        console.log(datos);
     
         MandarInfoAjax(datos, (respuesta) => {
     

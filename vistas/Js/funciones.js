@@ -6,8 +6,9 @@ function validarCampo(item) {
     }
 
     // Verifica caracteres permitidos
-    const regex = /^[a-zA-Z0-9\s]+$/;
+    const regex = /^[a-zA-Z0-9\s.]+$/;
     if (!regex.test(item)) {
+        console.log("Ups");
         return false;
     }
 
@@ -48,12 +49,13 @@ function MandarInfoAjax(datos, callback) {
 }
 
 function esUnNumero(input) {
-    return !isNaN(input) && typeof input === 'number';
+    return !isNaN(input) && typeof input === 'number' && input != 0;
 }
 
 function validarMov(lista) {
     for (const item of lista) {
         if (!validarCampo(item)) {
+            console.log(item);
 
             return false;
         }

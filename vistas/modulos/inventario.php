@@ -44,6 +44,7 @@
                     <th>Producto</th>
                     <th>Cantidad</th>
                     <th>Fecha</th>
+                    <th>Ultima Modificacion</th>
                     <th>Acciones</th>
                   </thead>
                   <tbody>
@@ -83,6 +84,17 @@
                             <td>'.$value["producto"].'</td>
                             <td>'.$value["cantidad"].'</td>
                             <td>'.$value["fecha"].'</td>';
+
+                        if ($value["ultima_modificacion"]) {
+
+                          echo '<td>'.$value["ultima_modificacion"].'</td>';
+  
+                        } else {
+  
+                          echo '<td> - </td>';
+                        
+                        }
+      
 
                         echo '<td>
                                   <div class="btn-group">
