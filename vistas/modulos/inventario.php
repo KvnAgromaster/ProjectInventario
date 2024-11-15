@@ -69,7 +69,7 @@
 
                         if ($value["status"] == 1) {
 
-                          $index++;  // Incremento
+                          $index++; // Incremento
 
                           if ($value["tipo_movimiento"] == 1) { //ENTRADA
 
@@ -84,7 +84,7 @@
                           echo '<td>'.$index.'</td>
                               <td>'.$value["almacen"].'</td>
                               <td>'.$value["producto"].'</td>
-                              <td>'.$value["cantidad"].'</td>
+                              <td>'.round($value["cantidad"], 2).'</td>
                               <td>'.$value["fecha"].'</td>';
 
                           if ($value["ultima_modificacion"]) {
@@ -273,7 +273,7 @@
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-th"></i></span> 
 
-                <select class="form-control input-lg" name="productoMovEditar" required>
+                <select class="form-control input-lg" id="_productoMovEditar" name="_productoMovEditar" required>
                   <option value="" id="productoMovEditar"></option>
 
                   <?php
@@ -306,7 +306,7 @@
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-th"></i></span> 
 
-                <select class="form-control input-lg" name="almacenMovEditar" required>
+                <select class="form-control input-lg" id="_almacenMovEditar" name="_almacenMovEditar" required>
                   <option value="" id="almacenMovEditar"></option>
 
                   <?php
@@ -341,6 +341,7 @@
                   <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
                   <input type="number" onkeydown="return event.keyCode !== 69" class="form-control input-lg" name="cantidadMovEditar" id="cantidadMovEditar" min="0" placeholder="Cantidad" required>
                 </div>
+                <input type="hidden" id="idMovActual">
               </div>
 
               <div class="col-xs-6"> 
@@ -348,7 +349,7 @@
                 <div class="input-group">
                   <span class="input-group-addon"><i class="fa fa-th"></i></span> 
 
-                  <select class="form-control input-lg"  name="tipoMovEditar" required>
+                  <select class="form-control input-lg" id="_tipoMovEditar" name="_tipoMovEditar" required>
                     <option value="" id="tipoMovEditar"></option>
                     <option value="1">Entrada</option>
                     <option value="0">Salida</option>
@@ -367,7 +368,7 @@
 
         <div class="modal-footer">
           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
-          <button type="button" id="btnModalAgregarMovimiento" class="btn btn-primary">Guardar</button>
+          <button type="button" id="btnModalEditarMovimiento" class="btn btn-primary">Modificar</button>
         </div>
 
       </form>
