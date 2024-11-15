@@ -32,6 +32,16 @@ class AjaxMovimientos {
 
     }
 
+    public function ajaxEditarMovimiento() {
+
+        $datos = $this -> mov;
+
+        $respuesta = ModeloMovimientos::mdlEditarMovimiento($datos);
+
+        echo json_encode($respuesta);
+
+    }
+
 }
 
 if (isset($_POST["identificador"]) && $_POST["identificador"] == "AgregarMovimiento") {
@@ -55,5 +65,13 @@ if (isset($_POST["identificador"]) && $_POST["identificador"] == "ConsultarMovim
     $Movimiento = new AjaxMovimientos();
     $Movimiento -> mov = $_POST["datos"];
     $Movimiento -> ajaxConsultarMovimiento();
+
+}
+
+if (isset($_POST["identificador"]) && $_POST["identificador"] == "EditarMovimiento") {
+
+    $Movimiento = new AjaxMovimientos();
+    $Movimiento -> mov = $_POST["datos"];
+    $Movimiento -> ajaxEditarMovimiento();
 
 }
