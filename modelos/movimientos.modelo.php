@@ -92,35 +92,4 @@ class ModeloMovimientos {
 
     }
 
-    // EDITAR MOVIMIENTO
-
-	static public function mdlEditarMovimiento($datos) {
-
-		$aux = json_decode($datos, true);
-
-		$tabla = $aux["tabla"];
-
-		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET almacen = :almacen, producto = :producto, cantidad = :cantidad, tipo_movimiento = :tipo_movimiento, ultima_modificacion = :ultima_modificacion WHERE id = :id");
-			$stmt -> bindParam(":producto", $aux["producto"], PDO::PARAM_STR);
-            $stmt -> bindParam(":almacen", $aux["almacen"], PDO::PARAM_STR);
-            $stmt -> bindParam(":cantidad", $aux["cantidad"], PDO::PARAM_STR);
-            $stmt -> bindParam(":tipo_movimiento", $aux["tipoMov"], PDO::PARAM_INT);
-			$stmt -> bindParam(":ultima_modificacion", $aux["fecha"], PDO::PARAM_STR);
-			$stmt -> bindParam(":id", $aux["id"], PDO::PARAM_INT);
-
-			if($stmt->execute()){
-
-				return "ok";
-
-			}else{
-
-				return "error";
-			
-			}
-
-		$stmt->close();
-		$stmt = null;
-
-	}
-
 }
