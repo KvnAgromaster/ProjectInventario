@@ -69,7 +69,7 @@
 
                         if ($value["status"] == 1) {
 
-                          $index++;  // Incremento
+                          $index++; // Incremento
 
                           if ($value["tipo_movimiento"] == 1) { //ENTRADA
 
@@ -84,7 +84,7 @@
                           echo '<td>'.$index.'</td>
                               <td>'.$value["almacen"].'</td>
                               <td>'.$value["producto"].'</td>
-                              <td>'.$value["cantidad"].'</td>
+                              <td>'.round($value["cantidad"], 2).'</td>
                               <td>'.$value["fecha"].'</td>';
 
                           if ($value["ultima_modificacion"]) {
@@ -242,6 +242,133 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
           <button type="button" id="btnModalAgregarMovimiento" class="btn btn-primary">Guardar</button>
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div id="modalEditarMovimiento" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+
+      <form role="form" enctype="multipart/form-data">
+
+        <!-- header modal -->
+
+        <div class="modal-header" style="background: #3c8dbc; color: white;">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Editar Movimiento</h4>
+        </div>
+
+        <div class="modal-body">
+          <div class="box-body">
+            <!-- Input para el producto en movimiento -->
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-th"></i></span> 
+
+                <select class="form-control input-lg" id="_productoMovEditar" name="_productoMovEditar" required>
+                  <option value="" id="productoMovEditar"></option>
+
+                  <?php
+
+                    $item = null;
+                    $valor = null;
+
+                    $json = array("tabla" => "productos",
+                                      "item" => $item,
+                                      "valor" => $valor);
+
+                    $datos = json_encode($json);
+
+                    $productos = ModeloProductos::mdlMostrarProductos($datos);
+
+                    foreach ($productos as $key => $value) {
+                      
+                      echo '<option value="'.$value["producto"].'">'.$value["producto"].'</option>';
+                    }
+
+                  ?>
+
+                </select>
+
+              </div>
+            </div>
+
+            <!-- Input para el almacen en movimiento -->
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-th"></i></span> 
+
+                <select class="form-control input-lg" id="_almacenMovEditar" name="_almacenMovEditar" required>
+                  <option value="" id="almacenMovEditar"></option>
+
+                  <?php
+
+                    $item = null;
+                    $valor = null;
+
+                    $json = array("tabla" => "almacenes",
+                                      "item" => $item,
+                                      "valor" => $valor);
+
+                    $datos = json_encode($json);
+
+                    $almacenes = ModeloAlmacenes::mdlMostrarAlmacenes($datos);
+
+                    foreach ($almacenes as $key => $value) {
+                      
+                      echo '<option value="'.$value["almacen"].'">'.$value["almacen"].'</option>';
+                    }
+
+                  ?>
+
+                </select>
+
+              </div>
+            </div>
+            
+            <!-- Input para la cantidad -->
+            <div class="form-group row">
+              <div class="col-xs-6">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+                  <input type="number" onkeydown="return event.keyCode !== 69" class="form-control input-lg" name="cantidadMovEditar" id="cantidadMovEditar" min="0" placeholder="Cantidad" required>
+                </div>
+                <input type="hidden" id="idMovActual">
+              </div>
+
+              <div class="col-xs-6"> 
+
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-th"></i></span> 
+
+                  <select class="form-control input-lg" id="_tipoMovEditar" name="_tipoMovEditar" required>
+                    <option value="" id="tipoMovEditar"></option>
+                    <option value="1">Entrada</option>
+                    <option value="0">Salida</option>
+
+                  </select>
+
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- modal footer -->
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
+          <button type="button" id="btnModalEditarMovimiento" class="btn btn-primary">Modificar</button>
         </div>
 
       </form>
