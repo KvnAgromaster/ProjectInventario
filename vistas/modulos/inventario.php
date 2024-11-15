@@ -69,7 +69,7 @@
 
                         if ($value["status"] == 1) {
 
-                          $index++; // Incremento
+                          $index++;  // Incremento
 
                           if ($value["tipo_movimiento"] == 1) { //ENTRADA
 
