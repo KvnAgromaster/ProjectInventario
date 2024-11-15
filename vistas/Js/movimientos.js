@@ -121,39 +121,3 @@ $(document).on("click", ".btnEliminarMovimiento", function(){
     });
 
 })
-
-$(document).on("click", ".btnEditarMovimiento", function(){
-
-    let datos = {
-        url: "ajax/movimientos.ajax.php",
-        identificador: "ConsultarMovimiento",
-        tabla: "movimientos",
-        item: "id",
-        valor: $(this).attr("idMovimiento"),
-
-    }
-
-    MandarInfoAjax(datos, (respuesta) => {
-        $("#productoMovEditar").val(respuesta["producto"]);
-        $("#productoMovEditar").html(respuesta["producto"]);
-
-        $("#almacenMovEditar").val(respuesta["almacen"]);
-        $("#almacenMovEditar").html(respuesta["almacen"]);
-
-        if (respuesta["tipo_movimiento"] == 1) {
-
-            $("#tipoMovEditar").html("Entrada");
-
-        } else {
-
-            $("#tipoMovEditar").html("Salida");
-
-        } 
-        
-        $("#tipoMovEditar").val(respuesta["tipo_movimiento"]);
-
-        $("#cantidadMovEditar").val(respuesta["cantidad"]);
-
-    })
-
-})
