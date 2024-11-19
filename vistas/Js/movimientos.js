@@ -1,3 +1,91 @@
+window.addEventListener('load', async () => {
+
+    await initDataTable();    
+
+});
+
+let dataTable;
+let dataTableIsInitialized = false;
+
+const initDataTable = async () => {
+
+    if (dataTableIsInitialized) {
+        dataTable.destroy();
+    }
+
+    DibujarTabla();
+    
+    dataTableIsInitialized = true;
+
+};
+
+function DibujarTabla() {
+
+    let datos = {
+
+        url: "ajax/movimientos.ajax.php",
+        identificador: "ConsultarMovimiento",
+        item: null,
+        tabla: "movimientos",
+        status: 1,
+
+    }
+
+    MandarInfoAjax(datos, (respuesta) => {
+
+        const dataSet = respuesta.map((element, index) => {
+            const tipoMovimientoClase = element.tipo_movimiento == 1 ? "success" : "danger";
+            const ultimaModificacion = element.ultima_modificacion || "-";
+            const acciones = `
+                <div class="btn-group">
+                    <button class="btn btn-xs btn-warning btnEditarMovimiento" idMovimiento="${element.id}" data-toggle="modal" data-target="#modalEditarMovimiento">
+                        <i class="fa fa-pencil"></i>
+                    </button>
+                    <button class="btn btn-xs btn-danger btnEliminarMovimiento" idMovimiento="${element.id}">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+            `;
+
+            const cantidad = Math.round(element.cantidad * 100) / 100;
+    
+            return [
+                index + 1,
+                element.almacen,
+                element.producto,
+                cantidad,
+                element.fecha,
+                ultimaModificacion,
+                acciones,
+                tipoMovimientoClase,
+
+            ];
+        });
+
+        dataTable = $("#datatable_movimientos").DataTable({
+            destroy: true,
+            responsive: true,
+            autoWidth: false,
+            data: dataSet, 
+            createdRow: function (row, data, index) {
+
+                if (data[7] == "success") {
+
+                    $(row).addClass('success');
+
+                } else {
+
+                    $(row).addClass('danger');
+
+                }
+                
+            }
+        });
+
+    })
+
+}
+
 $("#cantidadMov").on("keyup", function() {
     let currentInputValue = parseFloat($("#cantidadMov").val());
 
@@ -112,8 +200,6 @@ $(document).on("click", ".btnEliminarMovimiento", function(){
 
             MandarInfoAjax(datos, (respuesta) => { 
 
-                console.log(respuesta);
-
                 Swal.fire({
                     icon: "success",
                     title: "El registro ha sido borrado correctamente!",
@@ -144,8 +230,6 @@ $(document).on("click", "#btnModalEditarMovimiento", function () {
     let tipo_movimiento = $("#_tipoMovEditar").val();
 
     let listaValidacion = [productoMov, almacenMov, cantidad, tipo_movimiento];
-
-    console.log(listaValidacion);
 
     // REALIZAR VALIDACION
 
@@ -216,13 +300,15 @@ $(document).on("click", ".btnEditarMovimiento", function(){
     }
 
     MandarInfoAjax(datos, (respuesta) => {
-        $("#productoMovEditar").val(respuesta["producto"]);
-        $("#productoMovEditar").html(respuesta["producto"]);
+        console.log(respuesta[0].almacen);
 
-        $("#almacenMovEditar").val(respuesta["almacen"]);
-        $("#almacenMovEditar").html(respuesta["almacen"]);
+        $("#productoMovEditar").val(respuesta[0].producto);
+        $("#productoMovEditar").html(respuesta[0].producto);
 
-        if (respuesta["tipo_movimiento"] == 1) {
+        $("#almacenMovEditar").val(respuesta[0].almacen);
+        $("#almacenMovEditar").html(respuesta[0].almacen);
+
+        if (respuesta[0].tipo_movimiento == 1) {
 
             $("#tipoMovEditar").html("Entrada");
 
@@ -232,9 +318,9 @@ $(document).on("click", ".btnEditarMovimiento", function(){
 
         } 
         
-        $("#tipoMovEditar").val(respuesta["tipo_movimiento"]);
+        $("#tipoMovEditar").val(respuesta[0].tipo_movimiento);
 
-        $("#cantidadMovEditar").val(Math.round(respuesta["cantidad"] * 100) / 100); //REDONDEA A DOS DECIMALES
+        $("#cantidadMovEditar").val(Math.round(respuesta[0].cantidad * 100) / 100); //REDONDEA A DOS DECIMALES
 
         if ($("#cantidadMovEditar").val() == "0.0" || $("#cantidadMovEditar").val() == "0" ) {
 
@@ -242,7 +328,7 @@ $(document).on("click", ".btnEditarMovimiento", function(){
 
         }
 
-        $("#idMovActual").val(respuesta["id"]);
+        $("#idMovActual").val(respuesta[0].id);
 
     })
 

@@ -7,26 +7,31 @@ class ModeloMovimientos {
     // Mostrar Movimientos
     static public function mdlMostrarMovimientos($datos) {
 
-		$aux = json_decode($datos, true);
+		$datos = json_decode($datos, true);
 
-		$tabla = $aux["tabla"];
-		$item = $aux["item"];
-		$valor = $aux["valor"];
+		$tabla = $datos["tabla"];
+		$item = $datos["item"];
 
+		$exquery = "";
+
+		if(isset($datos["status"])){
+			$exquery = $exquery . " AND status = $datos[status] ";
+		}
 		if ($item != null) {
-            $stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item ORDER BY id DESC");
-            $stmt -> bindParam(":".$item, $valor, PDO::PARAM_STR);
-            $stmt -> execute();
+			$exquery .=  " AND $item = $datos[valor] ";
+		}
 
-            return $stmt -> fetch();
+		$stmt = Conexion::conectar()->prepare("SELECT * 
+			FROM $tabla
+			WHERE 1 = 1 
+			
+			$exquery
+				
+			ORDER BY id DESC
+		");
+		$stmt -> execute();
 
-        } else {
-
-            $stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla ORDER BY id DESC");
-            $stmt -> execute();
-
-            return $stmt -> fetchAll();
-        }
+		return $stmt -> fetchAll();
 
         $stmt -> close();
         $stmt = null;
