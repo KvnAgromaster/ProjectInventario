@@ -37,7 +37,7 @@
               </div>
 
               <div class="tab-pane active" id="tab_2">
-                <table class="table table-striped table-condensed tablas">
+                <table class="table table-condensed" id="datatable_movimientos">
                   <thead>
                     <th>#</th>
                     <th>Almacen</th>
@@ -48,69 +48,8 @@
                     <th>Acciones</th>
                   </thead>
                   <tbody>
-                    <?php 
-
-                      $item = null;
-                      $valor = null;
-
-                      // Creacion de JSON 
-
-                      $json = array("tabla" => "movimientos",
-                                      "item" => $item,
-                                      "valor" => $valor);
-
-                      $datos = json_encode($json);
-                                      
-                      $index = 0;
-
-                      $movimientos = ModeloMovimientos::mdlMostrarMovimientos($datos);
-
-                      foreach ($movimientos as $key => $value) {
-
-                        if ($value["status"] == 1) {
-
-                          $index++; // Incremento
-
-                          if ($value["tipo_movimiento"] == 1) { //ENTRADA
-
-                            echo '<tr class="success">';
-
-                          } else {
-
-                            echo '<tr class="danger">';
-
-                          }
-
-                          echo '<td>'.$index.'</td>
-                              <td>'.$value["almacen"].'</td>
-                              <td>'.$value["producto"].'</td>
-                              <td>'.round($value["cantidad"], 2).'</td>
-                              <td>'.$value["fecha"].'</td>';
-
-                          if ($value["ultima_modificacion"]) {
-
-                            echo '<td>'.$value["ultima_modificacion"].'</td>';
-    
-                          } else {
-    
-                            echo '<td> - </td>';
-                          
-                          }
-        
-
-                          echo '<td>
-                                    <div class="btn-group">
-                                      <button class="btn btn-xs btn-warning btnEditarMovimiento" idMovimiento="'.$value["id"].'" data-toggle="modal" data-target="#modalEditarMovimiento"><i class="fa fa-pencil"></i></button>
-                                      <button class="btn btn-xs btn-danger btnEliminarMovimiento" idMovimiento="'.$value["id"].'" ><i class="fa fa-times"></i></button>
-                                    </div>
-                                  </td>';
-
-                        }
-
-                      }
-
-                    ?>
-                  </tbody>
+                    
+                  </tbody> 
                 </table>
               </div>
             </div>     
