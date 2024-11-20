@@ -12,7 +12,12 @@
     <section class="content">
 
       <div class="box-header with-border">
-        <button class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarProducto">Agregar</button>
+        <div>
+          <button class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarProducto">
+            <i class="fa fa-plus"></i>
+             Agregar
+          </button>
+        </div>
       </div>
 
       <!-- Default box -->
