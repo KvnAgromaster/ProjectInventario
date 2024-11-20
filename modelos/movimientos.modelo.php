@@ -22,6 +22,22 @@ class ModeloMovimientos {
 			$exquery .= " AND $item = $datos[valor]";
 		}
 
+		// FILTROS
+
+		if (isset($datos["filtroAlmacen"]) && $datos["filtroAlmacen"] != '') {
+
+			$exquery .= " AND almacen = '$datos[filtroAlmacen]'";
+		}
+		if (isset($datos["filtroProducto"]) && $datos["filtroProducto"] != '') {
+
+			$exquery .= " AND producto = '$datos[filtroProducto]'";
+		}
+		if (isset($datos["filtroMovimientos"]) && $datos["filtroMovimientos"] != '') {
+
+			$exquery .= " AND tipo_movimiento = '$datos[filtroMovimientos]'";
+		}
+		
+
 		$stmt = Conexion::conectar()->prepare("SELECT * 
 			FROM $tabla
 			WHERE 1 = 1 
