@@ -10,16 +10,19 @@
 
   <!-- Main content -->
   <section class="content">
-
-      <div class="box-header with-border">
-        <button class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarAlmacen">Agregar</button>
+    <div class="box-header with-border">
+      <div>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarAlmacen">
+          <i class="fa fa-plus"></i>
+            Agregar
+        </button>
       </div>
+    </div>
 
     <!-- Default box -->
     <div class="box box-primary">
       <div class="box-body">
         <table class="table table-striped tablas">
-
           <thead>
             <tr>
               <th>#</th>

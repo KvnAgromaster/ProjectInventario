@@ -11,14 +11,15 @@ class ModeloMovimientos {
 
 		$tabla = $datos["tabla"];
 		$item = $datos["item"];
+		$order = $datos["orderby"];
 
 		$exquery = "";
 
 		if(isset($datos["status"])){
-			$exquery = $exquery . " AND status = $datos[status] ";
+			$exquery .= " AND status = $datos[status]";
 		}
 		if ($item != null) {
-			$exquery .=  " AND $item = $datos[valor] ";
+			$exquery .= " AND $item = $datos[valor]";
 		}
 
 		$stmt = Conexion::conectar()->prepare("SELECT * 
@@ -27,7 +28,7 @@ class ModeloMovimientos {
 			
 			$exquery
 				
-			ORDER BY id DESC
+			ORDER BY $order
 		");
 		$stmt -> execute();
 
@@ -35,7 +36,6 @@ class ModeloMovimientos {
 
         $stmt -> close();
         $stmt = null;
-
         
     }
 

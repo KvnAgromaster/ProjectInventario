@@ -12,7 +12,12 @@
     <section class="content">
 
       <div class="box-header with-border">
-        <button class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarMovimiento">Nuevo Movimiento</button>
+        <div>
+          <button class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarMovimiento">
+            <i class="fa fa-plus"></i>
+             Nuevo Movimiento
+          </button>
+        </div>
       </div>
 
       <!-- Default box -->
@@ -20,20 +25,32 @@
         <div class="box-body">
           <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
-
               <li>
-                <a href="#tab_1" data-toggle="tab"><Strong>Inventarios</Strong></a>
+                <a href="#tab_1" data-toggle="tab"><i class="fa fa-th-list"></i><strong> INVENTARIOS</strong></a>
               </li>
 
               <li class="active">
-                <a href="#tab_2" data-toggle="tab"><strong>Movimientos</strong></a>
+                <a href="#tab_2" data-toggle="tab"><i class="fa fa-exchange"></i><strong> MOVIMIENTOS</strong></a>
               </li>
 
             </ul>
             <div class="tab-content">
 
               <div class="tab-pane" id="tab_1">
-                Hola
+                <table class="table table-striped table-condensed" id="datatable_inventario">
+                  <thead>
+                    <th>#</th>
+                    <th>Almacen</th>
+                    <th>Producto</th>
+                    <th>Total Entradas</th>
+                    <th>Total Salidas</th>
+                    <th>Diferencia</th>
+                    <th>Acciones</th>
+                  </thead>
+                  <tbody>
+                    
+                  </tbody> 
+                </table>
               </div>
 
               <div class="tab-pane active" id="tab_2">
