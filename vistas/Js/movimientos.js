@@ -616,6 +616,8 @@ function DibujarTablaInventarios(datos) {
 
 $("#btnFiltro").on("click", async () => {
 
+  let prueba = "";
+
   filtroAlmacen = $("#filtroAlmacen").val();
   filtroProducto = $("#filtroProducto").val();
   filtroMovimientos = $("#filtroMov").val();
