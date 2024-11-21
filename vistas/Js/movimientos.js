@@ -1,32 +1,39 @@
+
 let dataTable;
 let dataTableIsInitialized = false;
 
 window.addEventListener('load', async () => {
 
-  let datos = {
-
-    url: "ajax/movimientos.ajax.php",
-    identificador: "ConsultarMovimiento",
-    item: null,
-    tabla: "movimientos",
-    status: 1,
-    orderby: "id",
+  let datosTablas = {
+    datosMov: {
+      url: "ajax/movimientos.ajax.php",
+      identificador: "ConsultarMovimiento",
+      item: null,
+      tabla: "movimientos",
+      status: 1,
+      orderby: "id",
+    },
+    datosInv: {
+      url: "ajax/movimientos.ajax.php",
+      identificador: "ConsultarMovimiento",
+      item: null,
+      tabla: "inventario_view",
+      orderby: "almacen",
+    }
   }
 
-  await initDataTable(datos);    
+  await initDataTable(datosTablas);    
 
 });
 
-const initDataTable = async (datos) => {
+const initDataTable = async (datosTablas) => {
 
   if (dataTableIsInitialized) {
-      dataTable.destroy();
+    dataTable.destroy();
   }
 
-  
-
-  DibujarTablaMovimientos(datos);
-  DibujarTablaInventarios();
+  DibujarTablaMovimientos(datosTablas.datosMov);
+  DibujarTablaInventarios(datosTablas.datosInv);
   
   dataTableIsInitialized = true;
 
@@ -34,10 +41,10 @@ const initDataTable = async (datos) => {
 
 function DibujarTablaMovimientos(datos) {
 
-  console.log(datos);
+  // console.log(datos);
   
   MandarInfoAjax(datos, (respuesta) => {
-    console.log(respuesta);
+    // console.log(respuesta);
 
       const dataSet = respuesta.map((element, index) => {
         const tipoMovimientoClase = element.tipo_movimiento == 1 ? "success" : "danger";
@@ -326,17 +333,11 @@ function DibujarTablaMovimientos(datos) {
 
 }
 
-function DibujarTablaInventarios() {
-  
-  let datos = {
-    url: "ajax/movimientos.ajax.php",
-    identificador: "ConsultarMovimiento",
-    item: null,
-    tabla: "inventario_view",
-    orderby: "nombre_almacen",
-  }
+function DibujarTablaInventarios(datos) {
 
   MandarInfoAjax(datos, (respuesta) => {
+
+    console.log(respuesta);
 
     const dataSet = respuesta.map((element, index) => {
         const acciones = `
@@ -356,8 +357,8 @@ function DibujarTablaInventarios() {
 
         return [
             index + 1,
-            element.nombre_almacen,
-            element.nombre_producto,
+            element.almacen,
+            element.producto,
             total_entradas,
             total_salidas,
             diferencia,
@@ -611,6 +612,8 @@ function DibujarTablaInventarios() {
 
 }
 
+
+
 $("#btnFiltro").on("click", async () => {
 
   filtroAlmacen = $("#filtroAlmacen").val();
@@ -618,18 +621,28 @@ $("#btnFiltro").on("click", async () => {
   filtroMovimientos = $("#filtroMov").val();
 
   let datos = {
-
-    url: "ajax/movimientos.ajax.php",
-    identificador: "ConsultarMovimiento",
-    item: null,
-    tabla: "movimientos",
-    status: 1,
-    orderby: "id",
-    filtroAlmacen: filtroAlmacen,
-    filtroProducto: filtroProducto,
-    filtroMovimientos: filtroMovimientos
+    datosMov: {
+      url: "ajax/movimientos.ajax.php",
+      identificador: "ConsultarMovimiento",
+      item: null,
+      tabla: "movimientos",
+      status: 1,
+      orderby: "id",
+      filtroAlmacen: filtroAlmacen,
+      filtroProducto: filtroProducto,
+      filtroMovimientos: filtroMovimientos
+    },
+    datosInv: {
+      url: "ajax/movimientos.ajax.php",
+      identificador: "ConsultarMovimiento",
+      item: null,
+      tabla: "inventario_view",
+      orderby: "almacen",
+      filtroAlmacen: filtroAlmacen,
+      filtroProducto: filtroProducto,
+    }
   }
-
+  
   await initDataTable(datos);
 
 })
