@@ -77,16 +77,6 @@
 
         </div>
 
-        <div class="col-xs-6">
-          <select class="form-control" id="filtroMov" name="filtroMov" required>
-            <option value="">Todos Movimientos</option>
-            <option value="1">Entrada</option>
-            <option value="0">Salida</option>
-
-          </select>
-
-        </div>
-
         <div class="box-header with-border">
 
           <button class="btn btn-primary" id="btnFiltro">
@@ -134,20 +124,36 @@
             </div>
 
             <div class="tab-pane active" id="tab_2">
-              <table class="table table-condensed" id="datatable_movimientos">
-                <thead>
-                  <th>#</th>
-                  <th>Almacen</th>
-                  <th>Producto</th>
-                  <th>Cantidad</th>
-                  <th>Fecha</th>
-                  <th>Ultima Modificacion</th>
-                  <th>Acciones</th>
-                </thead>
-                <tbody>
-                  
-                </tbody> 
-              </table>
+
+              <div class="filterMovContainer">
+                <div class="col-xs-2 filterMov">
+                  <select class="form-control" id="filtroMov" name="filtroMov" required>
+                    <option value="">Todos Movimientos</option>
+                    <option value="1">Entrada</option>
+                    <option value="0">Salida</option>
+
+                  </select>
+
+                </div>
+              </div>
+              
+              <div class="table-container">
+                <table class="table table-condensed" id="datatable_movimientos">
+                  <thead>
+                    <th>#</th>
+                    <th>Almacen</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Fecha</th>
+                    <th>Ultima Modificacion</th>
+                    <th>Acciones</th>
+                  </thead>
+                  <tbody>
+                    
+                  </tbody> 
+                </table>
+              </div>
+              
             </div>
           </div>     
         </div>

@@ -25,6 +25,17 @@
   align-items: center;
 }
 
+.filterMovContainer {
+  display: flex;
+  width: 100%;
+}
+
+.filterMov{
+  margin: 0 0 15px 0;
+  padding: 0;
+
+}
+
 html,
 body {
   height: 100%;
