@@ -1,3 +1,11 @@
+$("#nuevoAlmacen2").on("keyup", function() {
+    clearTimeout(timeoutId);    // Evita acumulaciones
+
+    timeoutId = setTimeout(function() {
+        let currentInputValue = $("#nuevoAlmacen").val();
+        ValidarAlmacen(currentInputValue, "#btnModalAgregarAlmacen", "#nuevoAlmacen");
+    }, 800);
+});
 
 $("#nuevoAlmacen").on("keyup", function() {
     clearTimeout(timeoutId);    // Evita acumulaciones
